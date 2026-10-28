@@ -1,0 +1,324 @@
+const express = require('express');
+const router = express.Router();
+const db = require('../config/database');
+const { authenticateToken } = require('../middleware/auth');
+const { retrieveRAGContext, generateSynthesizedResponse, invalidateRAGCache } = require('../utils/ragEngine');
+const { generateOllamaChatResponse } = require('../utils/ollamaEngine');
+const { generateGeminiChatResponse, generateGeminiDirectResponse } = require('../utils/geminiEngine');
+const { classifyDomain, normalizeText, OUT_OF_SCOPE_RESPONSE, MISSING_DATA_RESPONSE } = require('../utils/domainClassifier');
+
+router.use(authenticateToken);
+
+// Allow authenticated users to access AI features
+router.use((req, res, next) => {
+  if (!['USER', 'ADMIN', 'STORE_MANAGER', 'CARE_STAFF', 'RECEPTIONIST'].includes(req.user.role)) {
+    return res.status(403).json({
+      success: false,
+      message: 'Trợ lý AI chỉ dành cho người dùng đã xác thực.'
+    });
+  }
+  next();
+});
+
+function isScheduleCreationRequest(msg) {
+  const norm = normalizeText(msg);
+  if (norm.includes('co lich') || norm.includes('lich gi') || norm.includes('lich nao') || norm.includes('gan nhat') || norm.includes('khi nao') || norm.includes('da co')) {
+    return false;
+  }
+  const scheduleActionKeywords = [
+    'lap lich cho', 'tao lich cho', 'sinh lich cho', 'tu dong lap lich', 'tu dong tao lich',
+    'lap ke hoach cham soc', 'tao ke hoach cham soc', 'sinh lich cham soc', 'len ke hoach cham soc'
+  ];
+  return scheduleActionKeywords.some(kw => norm.includes(kw));
+}
+
+function createSmartCareSchedules(pet) {
+  const today = new Date();
+  const formatYMD = (d) => d.toISOString().split('T')[0];
+  const generatedSchedules = [];
+
+  for (let i = 0; i <= 2; i++) {
+    const targetDate = new Date(today);
+    targetDate.setDate(today.getDate() + i);
+    const dateStr = formatYMD(targetDate);
+
+    generatedSchedules.push({
+      pet_id: pet.id,
+      user_id: pet.user_id,
+      task_name: `[AI] Cho ${pet.name} ăn sáng dinh dưỡng`,
+      category: 'CHO_ĂN',
+      date: dateStr,
+      time: '07:30',
+      description: `Khẩu phần chuẩn AI: ${pet.species === 'Chó' ? 'Hạt khô + thịt nạc' : (pet.species === 'Mèo' ? 'Pate + hạt dinh dưỡng' : 'Thức ăn dinh dưỡng chuyên dụng')}.`,
+      priority: 'CAO',
+      status: 'CHƯA_THỰC_HIỆN'
+    });
+
+    generatedSchedules.push({
+      pet_id: pet.id,
+      user_id: pet.user_id,
+      task_name: `[AI] Cho ${pet.name} ăn tối & uống nước`,
+      category: 'CHO_ĂN',
+      date: dateStr,
+      time: '18:30',
+      description: `Khẩu phần chuẩn AI: Thức ăn dinh dưỡng và nước sạch.`,
+      priority: 'TRUNG_BÌNH',
+      status: 'CHƯA_THỰC_HIỆN'
+    });
+  }
+
+  // Add grooming schedule
+  const bathDate = new Date(today);
+  bathDate.setDate(today.getDate() + (7 - today.getDay()));
+  generatedSchedules.push({
+    pet_id: pet.id,
+    user_id: pet.user_id,
+    task_name: `[AI] Tắm rửa & Sấy lông cho ${pet.name}`,
+    category: 'VỆ_SINH',
+    date: formatYMD(bathDate),
+    time: '15:00',
+    description: `Tắm khử khuẩn, dưỡng lông suôn mượt và vệ sinh móng/tai.`,
+    priority: 'TRUNG_BÌNH',
+    status: 'CHƯA_THỰC_HIỆN'
+  });
+
+  return generatedSchedules;
+}
+
+// POST /api/ai/chat - Trợ lý AI Thông Minh (Ollama Local Qwen2.5:3b + RAG + Gemini Fallback)
+router.post('/chat', async (req, res) => {
+  try {
+    const { message, pet_id, history } = req.body;
+    if (!message || !message.trim()) {
+      return res.status(400).json({ success: false, message: 'Nội dung tin nhắn không được để trống.' });
+    }
+
+    const normMessage = normalizeText(message);
+    const userPets = db.find('pets', p => p.user_id === req.user.id) || [];
+    let pet = null;
+    if (pet_id) {
+      pet = db.findById('pets', pet_id);
+    } else if (userPets.length > 0) {
+      for (const p of userPets) {
+        const normName = normalizeText(p.name);
+        if (normName && normMessage.includes(normName)) {
+          pet = p;
+          break;
+        }
+      }
+      if (!pet && userPets.length === 1) {
+        pet = userPets[0];
+      }
+    }
+
+    console.log('\n======================================================================');
+    console.log(`👤 [1. USER MESSAGE]: "${message}" | User: ${req.user.name || req.user.full_name} (${req.user.role})`);
+    if (pet) console.log(`🐾 [PET CONTEXT]: ${pet.name} (${pet.species} - ${pet.breed || 'Chưa rõ'})`);
+
+    // =========================================================================
+    // STEP 1: DOMAIN & SCOPE GUARD
+    // =========================================================================
+    const classification = classifyDomain(message);
+    if (!classification.isAllowed) {
+      console.log('🚫 [DOMAIN GUARD] Câu hỏi ngoài phạm vi Sen Chăm Boss & Thú cưng:', message);
+      return res.json({
+        success: true,
+        reply: OUT_OF_SCOPE_RESPONSE,
+        engine: 'domain-guard',
+        rag: { retrievedCount: 0, sources: [] }
+      });
+    }
+
+    // Direct database deletion command guard
+    if (normMessage.startsWith('xoa thu cung') || normMessage.startsWith('xoa pet') || normMessage.startsWith('xoa ho so')) {
+      return res.json({
+        success: true,
+        reply: 'Trợ lý AI không có quyền tự ý xóa hồ sơ thú cưng trong cơ sở dữ liệu. Bạn vui lòng thao tác trực tiếp trên giao diện "Quản lý thú cưng" của hệ thống.',
+        engine: 'system-guard',
+        rag: { retrievedCount: 0, sources: [] }
+      });
+    }
+
+    // =========================================================================
+    // STEP 2: AUTO SCHEDULE CREATION INTENT
+    // =========================================================================
+    if (isScheduleCreationRequest(message)) {
+      console.log('⚙️ [ROUTING] -> ACTION: Phát hiện ý định tạo lịch chăm sóc tự động');
+
+      let targetPet = pet;
+      if (!targetPet && userPets.length > 0) {
+        if (normMessage.includes('meo') || normMessage.includes('cat')) {
+          targetPet = userPets.find(p => normalizeText(p.species).includes('meo') || normalizeText(p.species).includes('cat'));
+        } else if (normMessage.includes('cho') || normMessage.includes('cun')) {
+          targetPet = userPets.find(p => normalizeText(p.species).includes('cho') || normalizeText(p.species).includes('dog'));
+        }
+        if (!targetPet) targetPet = userPets[0];
+      }
+
+      if (!targetPet) {
+        const isCat = normMessage.includes('meo') || normMessage.includes('cat');
+        targetPet = {
+          id: userPets[0]?.id || 'general_pet',
+          user_id: req.user.id,
+          name: isCat ? 'Mèo cưng' : 'Cún cưng',
+          species: isCat ? 'Mèo' : 'Chó'
+        };
+      }
+
+      if (targetPet) {
+        const generatedSchedules = createSmartCareSchedules(targetPet);
+        const reply = `Dạ, mình đã thiết lập xong **Lịch Chăm Sóc Thông Minh** cho bé **${targetPet.name}** (${targetPet.species}):\n\n` +
+          `• 🍲 **Ăn sáng & Ăn tối dinh dưỡng:** 07:30 & 18:30 hàng ngày\n` +
+          `• 🛁 **Tắm rửa & Sấy lông:** 15:00 Chủ nhật tuần này\n` +
+          `• ✂️ **Cắt móng & Vệ sinh tai:** 10:00 ngày ${generatedSchedules[generatedSchedules.length - 1].date}\n\n` +
+          `*Bạn có thể bấm nút bên dưới để lưu ngay toàn bộ lịch này vào hệ thống nhé!*`;
+
+        return res.json({
+          success: true,
+          action: 'SCHEDULE_GENERATED',
+          reply,
+          pet: targetPet,
+          schedules: generatedSchedules,
+          engine: 'action-scheduler',
+          rag: { retrievedCount: 0, sources: [] }
+        });
+      }
+    }
+
+    // =========================================================================
+    // STEP 3: RAG RETRIEVAL (ChromaDB / Embedding Retrieval)
+    // =========================================================================
+    const ragChunks = await retrieveRAGContext(message, req.user, pet, db, classification);
+    console.log('📚 [2. RAG RETRIEVED DOCS]:', ragChunks.length, 'tài liệu');
+    ragChunks.forEach((c, idx) => {
+      console.log(`   [Doc ${idx + 1}] ID: ${c.id} | Title: ${c.title} | Type: ${c.type}`);
+    });
+
+    // =========================================================================
+    // STEP 4: OLLAMA LOCAL (QWEN2.5:3B) -> GEMINI FALLBACK -> LOCAL SYNTHESIZER
+    // =========================================================================
+    let reply = '';
+    let engine = 'qwen2.5:3b (Ollama Local)';
+
+    // 1. First priority: Local Ollama (qwen2.5:3b)
+    const ollamaRes = await generateOllamaChatResponse({
+      message: message.trim(),
+      history: Array.isArray(history) ? history : [],
+      pet,
+      ragContext: ragChunks,
+      user: req.user
+    });
+
+    if (ollamaRes && ollamaRes.reply) {
+      reply = ollamaRes.reply;
+      engine = ollamaRes.model || 'qwen2.5:3b (Ollama Local)';
+    } else {
+      console.log('🔄 [LLM FALLBACK] Ollama local không khả dụng, chuyển sang Gemini API...');
+      // 2. Secondary fallback: Gemini API
+      const geminiRes = await generateGeminiChatResponse({
+        message: message.trim(),
+        history: Array.isArray(history) ? history : [],
+        pet,
+        ragContext: ragChunks,
+        user: req.user
+      });
+
+      if (geminiRes && geminiRes.reply) {
+        reply = geminiRes.reply;
+        engine = geminiRes.model || 'gemini-flash';
+      } else {
+        // 3. Final fallback: Local Synthesizer
+        engine = 'local-rag-synthesizer';
+        reply = generateSynthesizedResponse(message, pet, ragChunks, req.user);
+      }
+    }
+
+    console.log('💬 [3. FINAL AI RESPONSE]:');
+    console.log(reply);
+    console.log(`🤖 Engine: ${engine}`);
+    console.log('======================================================================\n');
+
+    return res.json({
+      success: true,
+      reply,
+      engine,
+      rag: {
+        retrievedCount: ragChunks.length,
+        sources: ragChunks.map(c => ({ id: c.id, title: c.title, type: c.type }))
+      }
+    });
+  } catch (err) {
+    console.error('❌ AI chat error:', err);
+    res.status(500).json({ success: false, message: 'Lỗi khi xử lý phản hồi từ AI Assistant.' });
+  }
+});
+
+// GET /api/ai/pet-schedules/:pet_id - Lấy danh sách lịch chăm sóc / tiêm chủng sắp tới của thú cưng
+router.get('/pet-schedules/:pet_id', (req, res) => {
+  try {
+    const { pet_id } = req.params;
+    const pet = db.findById('pets', pet_id);
+    if (!pet) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy thú cưng.' });
+    }
+
+    const allSchedules = db.find('care_schedules', s => s.pet_id === pet_id) || [];
+    res.json({ success: true, schedules: allSchedules });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Lỗi khi lấy lịch chăm sóc.' });
+  }
+});
+
+// POST /api/ai/generate-reminder - Sinh tin nhắn mẫu
+router.post('/generate-reminder', async (req, res) => {
+  try {
+    const { pet_id, service_type } = req.body;
+    const pet = pet_id ? db.findById('pets', pet_id) : null;
+    const petName = pet ? pet.name : 'bé';
+    const sType = service_type || 'chăm sóc định kỳ';
+
+    const prompt = `Viết một tin nhắn ngắn gọn (2-3 câu) gửi cho chủ nuôi nhắc lịch ${sType} cho bé ${petName} tại Sen Chăm Boss. Thân thiện, chu đáo.`;
+    const reply = `Sen Chăm Boss xin chào bạn! Đã đến lịch ${sType} định kỳ cho bé ${petName}. Bạn có thể đặt lịch hẹn ngay trên website để cơ sở sắp xếp thời gian chu đáo nhất cho bé nhé!`;
+
+    res.json({ success: true, message_content: reply });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Lỗi khi sinh tin nhắn nhắc nhở.' });
+  }
+});
+
+// POST /api/ai/save-schedule - Lưu lịch chăm sóc
+router.post('/save-schedule', (req, res) => {
+  try {
+    const { schedules } = req.body;
+    if (!Array.isArray(schedules) || schedules.length === 0) {
+      return res.status(400).json({ success: false, message: 'Danh sách lịch chăm sóc không hợp lệ.' });
+    }
+
+    const createdList = [];
+    for (const item of schedules) {
+      const created = db.insert('care_schedules', {
+        pet_id: item.pet_id,
+        user_id: req.user.id,
+        task_name: item.task_name,
+        category: item.category || 'CHĂM_SÓC',
+        date: item.date,
+        time: item.time || '08:00',
+        description: item.description || '',
+        status: item.status || 'CHƯA_THỰC_HIỆN',
+        priority: item.priority || 'TRUNG_BÌNH',
+        created_at: new Date().toISOString()
+      });
+      createdList.push(created);
+    }
+
+    res.json({
+      success: true,
+      message: `Đã lưu thành công ${createdList.length} lịch chăm sóc vào hệ thống.`,
+      schedules: createdList
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Lỗi khi lưu lịch chăm sóc.' });
+  }
+});
+
+module.exports = router;

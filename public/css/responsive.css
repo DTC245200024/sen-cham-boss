@@ -1,0 +1,211 @@
+/* =========================================================
+   RESPONSIVE DESIGN RULES (TABLET & MOBILE)
+   ========================================================= */
+
+@media (max-width: 992px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: -280px;
+  }
+
+  .sidebar.active {
+    left: 0;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .toggle-sidebar-btn {
+    display: block;
+  }
+
+  .content-body {
+    padding: 20px 16px;
+  }
+
+  .top-navbar {
+    padding: 0 16px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  /* Force 2-column grids to 1-column */
+  .form-row-2, .form-row-auto {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 15px !important;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .pets-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .auth-card {
+    padding: 24px;
+  }
+
+  .card-header-flex {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .modal-card {
+    padding: 20px;
+    margin: 16px;
+  }
+
+  .schedule-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .schedule-time-box {
+    width: 100%;
+  }
+
+  /* Fix inputs overflowing */
+  .form-control, select, input, textarea {
+    width: 100% !important;
+    max-width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+
+  /* Fix Auth Form */
+  .auth-card {
+    padding: 20px;
+    width: calc(100% - 32px);
+    margin: 16px auto;
+    box-sizing: border-box;
+  }
+  .auth-brand h2 {
+    font-size: 22px;
+  }
+  .auth-brand p {
+    font-size: 13px;
+  }
+  .auth-card .btn {
+    font-size: 15px;
+    padding: 10px 20px;
+  }
+
+  /* Fix Modals to be scrollable and fit screen */
+  .modal-card {
+    padding: 16px;
+    margin: 12px;
+    max-width: calc(100vw - 24px);
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+  .modal-header h3 {
+    font-size: 18px;
+  }
+
+  /* Fix Table Responsiveness (Horizontal Scroll) */
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  /* Avatar sizing */
+  #profile-avatar-preview {
+    width: 100px !important;
+    height: 100px !important;
+  }
+  #top-user-name {
+    display: none; /* Hide name on very small screens to save space */
+  }
+
+  /* Fix Action Buttons overlap */
+  .btn {
+    white-space: normal;
+    word-break: break-word;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Ensure absolute safety for 480px screens */
+  .form-row-2, .form-row-auto {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  
+  .form-group {
+    margin-bottom: 15px !important;
+  }
+  
+  /* Give enough space at bottom of modal for safari bottom bar */
+  .modal-card {
+    padding-bottom: 80px !important;
+    margin-bottom: 40px !important;
+  }
+}
+
+/* Landing Page Responsive Rules */
+@media (max-width: 1024px) {
+  .landing-hero {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 60px 20px 40px;
+    text-align: center;
+  }
+  .hero-subtitle {
+    margin: 0 auto 30px;
+  }
+  .hero-cta-group, .hero-trust-list {
+    justify-content: center;
+  }
+  .features-cards-grid, .testimonials-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .footer-inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .landing-navbar {
+    padding: 14px 20px;
+  }
+  .landing-nav-links {
+    display: none;
+  }
+  .hero-title {
+    font-size: 34px;
+  }
+  .features-cards-grid, .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+  .landing-cta-banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 40px 24px;
+  }
+  .cta-banner-actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .footer-inner {
+    grid-template-columns: 1fr;
+  }
+  .floating-stat-badge {
+    display: none;
+  }
+}
+

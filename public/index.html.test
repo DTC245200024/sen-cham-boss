@@ -1,0 +1,816 @@
+�<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>H�! Th�ng Quản Lý Thú Cưng & L�9ch ChĒm Sóc - PetCare AI</title>
+  
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js for Statistics & Weight Timeline -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- AUTH SECTION (Show when not logged in) -->
+  <div id="auth-section" class="auth-container">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <i class="fa-solid fa-paw"></i>
+        <h2>PetCare System</h2>
+        <p id="auth-subtitle">ĐĒng nhập �Ồ quản lý thú cưng & l�9ch chĒm sóc</p>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login-form">
+        <div class="form-group">
+          <label><i class="fa-solid fa-envelope"></i> Email</label>
+          <input type="email" id="login-email" class="form-control" placeholder="name@example.com" required>
+        </div>
+        <div class="form-group">
+          <label><i class="fa-solid fa-lock"></i> Mật khẩu</label>
+          <input type="password" id="login-password" class="form-control" placeholder="⬢⬢⬢⬢⬢⬢⬢⬢" required>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <label style="font-size:13px; cursor:pointer;"><input type="checkbox" id="remember-me"> Ghi nh�: �Ēng nhập</label>
+          <a href="#" id="show-forgot-btn" style="font-size:13px; color:var(--primary); font-weight:600;">Quên mật khẩu?</a>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">
+          <i class="fa-solid fa-right-to-bracket"></i> ĐĒng Nhập
+        </button>
+      </form>
+
+      <!-- Register Form (Hidden by default) -->
+      <form id="register-form" style="display:none;">
+        <div class="form-group">
+          <label><i class="fa-solid fa-user"></i> Họ và Tên</label>
+          <input type="text" id="reg-name" class="form-control" placeholder="Nguy�&n VĒn A" required>
+        </div>
+        <div class="form-group">
+          <label><i class="fa-solid fa-envelope"></i> Email</label>
+          <input type="email" id="reg-email" class="form-control" placeholder="name@example.com" required>
+        </div>
+        <div class="form-group">
+          <label><i class="fa-solid fa-lock"></i> Mật khẩu</label>
+          <input type="password" id="reg-password" class="form-control" placeholder="Ít nhất 6 ký tự" required>
+        </div>
+        <!-- Vai trò mặc ��9nh là USER, không hiỒn th�9 cho người �Ēng ký tự do -->
+        <input type="hidden" id="reg-role" value="USER">
+        <button type="submit" class="btn btn-secondary" style="width:100%;">
+          <i class="fa-solid fa-user-plus"></i> ĐĒng Ký Tài Khoản
+        </button>
+      </form>
+
+      <!-- Forgot Password Form (Hidden by default) -->
+      <form id="forgot-form" style="display:none;">
+        <div class="form-group">
+          <label><i class="fa-solid fa-envelope"></i> Email �Ēng ký</label>
+          <input type="email" id="forgot-email" class="form-control" placeholder="Nhập email của bạn" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">
+          <i class="fa-solid fa-paper-plane"></i> Cấp Mật Khẩu Tạm
+        </button>
+      </form>
+
+      <!-- Auth Switch Links -->
+      <div style="text-align:center; margin-top:20px; font-size:14px; color:var(--text-muted);">
+        <span id="auth-switch-text">Chưa có tài khoản?</span>
+        <a href="#" id="auth-switch-btn" style="color:var(--primary); font-weight:700; margin-left:4px;">ĐĒng ký ngay</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MAIN APP LAYOUT (Show when logged in) -->
+  <div id="app-layout" style="display:none;">
+    
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <i class="fa-solid fa-paw"></i>
+        <h1>PetCare System</h1>
+      </div>
+
+      <nav class="sidebar-menu">
+        <div class="menu-label">Chức nĒng chính</div>
+        <a class="nav-link active" data-view="dashboard">
+          <i class="fa-solid fa-chart-pie"></i> Dashboard
+        </a>
+        <a class="nav-link" data-view="pets">
+          <i class="fa-solid fa-dog"></i> Quản Lý Thú Cưng
+        </a>
+        <a class="nav-link" data-view="schedules">
+          <i class="fa-solid fa-calendar-check"></i> L�9ch ChĒm Sóc
+        </a>
+        <a class="nav-link" data-view="health">
+          <i class="fa-solid fa-heart-pulse"></i> H� Sơ Sức Khỏe
+        </a>
+        <a class="nav-link" data-view="ai-assistant">
+          <i class="fa-solid fa-robot"></i> Trợ Lý AI ChĒm Sóc
+        </a>
+        <a class="nav-link" data-view="profile">
+          <i class="fa-solid fa-user"></i> H� Sơ Cá Nhân
+        </a>
+
+        <!-- Admin Only Section -->
+        <div id="admin-menu-group" style="display:none;">
+          <div class="menu-label">Quản tr�9 Admin</div>
+          <a class="nav-link" data-view="admin-users">
+            <i class="fa-solid fa-users-gear"></i> Quản Lý User
+          </a>
+          <a class="nav-link" data-view="admin-pets">
+            <i class="fa-solid fa-shield-cat"></i> Quản Lý Thú Cưng H�! Th�ng
+          </a>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-sm" style="cursor:pointer;" onclick="switchView('profile')">
+          <img id="user-avatar-img" src="" alt="Avatar">
+          <div class="user-info-sm">
+            <h4 id="user-name-txt">User Name</h4>
+            <span id="user-role-badge">ROLE</span>
+          </div>
+        </div>
+        <button id="logout-btn" title="ĐĒng xuất" style="background:none; border:none; color:#ef4444; font-size:18px; cursor:pointer;">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Body -->
+    <div class="main-wrapper">
+      
+      <!-- Top Navbar -->
+      <header class="top-navbar">
+        <div class="navbar-left">
+          <button id="toggle-sidebar-btn" class="toggle-sidebar-btn">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <h2 id="page-title" class="page-title">Dashboard</h2>
+        </div>
+
+        <div class="navbar-right">
+          <!-- Notification Bell -->
+          <button id="notif-btn" class="notif-bell-btn" title="Thông báo & Nhắc l�9ch">
+            <i class="fa-solid fa-bell"></i>
+            <span id="notif-badge" class="notif-badge" style="display:none;">0</span>
+          </button>
+
+          <!-- Current User Info -->
+          <div class="top-user-menu" onclick="switchView('profile')">
+            <img id="top-user-avatar" src="" alt="Avatar">
+            <div class="top-user-menu-info">
+              <strong id="top-user-name">Username</strong>
+              <span id="top-user-role" class="badge badge-info" style="font-size:10px; padding:2px 6px;">USER</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Views Router Container -->
+      <main class="content-body">
+
+        <!-- VIEW 1: DASHBOARD -->
+        <section id="view-dashboard" class="app-view">
+          <!-- Stats Grid -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-details">
+                <h3 id="stat-total-pets">0</h3>
+                <p>T�"ng thú cưng</p>
+              </div>
+              <div class="stat-icon primary"><i class="fa-solid fa-paw"></i></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-details">
+                <h3 id="stat-today-tasks">0</h3>
+                <p>L�9ch hôm nay</p>
+              </div>
+              <div class="stat-icon info"><i class="fa-solid fa-calendar-day"></i></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-details">
+                <h3 id="stat-completed-tasks">0</h3>
+                <p>Đã hoàn thành</p>
+              </div>
+              <div class="stat-icon secondary"><i class="fa-solid fa-circle-check"></i></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-details">
+                <h3 id="stat-overdue-tasks">0</h3>
+                <p>Quá hạn cần làm</p>
+              </div>
+              <div class="stat-icon danger"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-details">
+                <h3 id="stat-pending-tasks">0</h3>
+                <p>Chưa thực hi�!n</p>
+              </div>
+              <div class="stat-icon warning"><i class="fa-solid fa-clock"></i></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-details">
+                <h3 id="stat-recent-checks">0</h3>
+                <p>Lần khám gần �ây</p>
+              </div>
+              <div class="stat-icon primary"><i class="fa-solid fa-stethoscope"></i></div>
+            </div>
+          </div>
+
+          <!-- AI Insights Alert Container -->
+          <div id="ai-insights-container" style="margin-bottom:24px;"></div>
+
+          <!-- Charts & Tasks Grid Layout -->
+          <div class="form-row-auto">
+            <!-- Today's Care Tasks Card -->
+            <div class="card-box">
+              <div class="card-header-flex">
+                <h3><i class="fa-solid fa-list-check" style="color:var(--primary);"></i> Vi�!c cần làm hôm nay</h3>
+                <button class="btn btn-outline btn-sm" onclick="switchView('schedules')">Xem tất cả</button>
+              </div>
+              <div id="dashboard-today-list"></div>
+            </div>
+
+            <!-- Overdue Tasks Card -->
+            <div class="card-box">
+              <div class="card-header-flex">
+                <h3><i class="fa-solid fa-clock-rotate-left" style="color:var(--danger);"></i> Vi�!c quá hạn chưa xong</h3>
+                <button class="btn btn-outline btn-sm" onclick="switchView('schedules')">Xử lý ngay</button>
+              </div>
+              <div id="dashboard-overdue-list"></div>
+            </div>
+
+            <!-- Chart 1: Species Distribution -->
+            <div class="card-box">
+              <div class="card-header-flex">
+                <h3><i class="fa-solid fa-chart-pie" style="color:var(--secondary);"></i> Phân b�" Loài thú cưng</h3>
+              </div>
+              <div style="height:220px; position:relative;">
+                <canvas id="speciesChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Chart 2: Care Status -->
+            <div class="card-box">
+              <div class="card-header-flex">
+                <h3><i class="fa-solid fa-chart-donut" style="color:var(--info);"></i> T�0 l�! Hoàn thành L�9ch</h3>
+              </div>
+              <div style="height:220px; position:relative;">
+                <canvas id="statusChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 2: PETS MANAGEMENT -->
+        <section id="view-pets" class="app-view" style="display:none;">
+          <div class="card-header-flex">
+            <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+              <!-- Species Filters -->
+              <button class="btn btn-outline filter-pet-btn active" data-species="ALL">Tất cả</button>
+              <button class="btn btn-outline filter-pet-btn" data-species="Chó">�x�� Chó</button>
+              <button class="btn btn-outline filter-pet-btn" data-species="Mèo">�x�� Mèo</button>
+              <button class="btn btn-outline filter-pet-btn" data-species="Khác">�x�� Khác</button>
+              
+              <!-- Search Box -->
+              <input type="text" id="pet-search-input" class="form-control" placeholder="Tìm theo tên, gi�ng..." style="width:200px;">
+            </div>
+
+            <button id="open-add-pet-btn" class="btn btn-primary">
+              <i class="fa-solid fa-plus"></i> Thêm Thú Cưng M�:i
+            </button>
+          </div>
+
+          <!-- Pets Grid -->
+          <div id="pets-grid-container" class="pets-grid"></div>
+        </section>
+
+        <!-- VIEW 3: HEALTH RECORDS -->
+        <section id="view-health" class="app-view" style="display:none;">
+          <div class="card-box">
+            <div class="card-header-flex">
+              <div style="display:flex; align-items:center; gap:16px;">
+                <label style="font-weight:700;">Chọn Thú Cưng:</label>
+                <select id="health-pet-select" class="form-control" style="width:220px;"></select>
+              </div>
+              <button id="open-add-health-btn" class="btn btn-secondary">
+                <i class="fa-solid fa-notes-medical"></i> Thêm H� Sơ Khám / Tiêm
+              </button>
+            </div>
+
+            <!-- Pet Health Overview -->
+            <div id="pet-health-overview" style="margin-bottom:24px; padding:16px; background:var(--bg-main); border-radius:var(--radius-md);"></div>
+
+            <!-- Weight Chart -->
+            <div style="margin-bottom:30px;">
+              <h4 style="margin-bottom:12px; font-weight:700;"><i class="fa-solid fa-weight-scale" style="color:var(--primary);"></i> BiỒu �� Theo Dõi Cân Nặng Theo Thời Gian</h4>
+              <div style="height:250px; position:relative; background:#fff; padding:16px; border-radius:var(--radius-md); border:1px solid var(--border);">
+                <canvas id="weightTimelineChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Timeline & Medical History -->
+            <h4 style="margin-bottom:16px; font-weight:700;"><i class="fa-solid fa-clock-rotate-left" style="color:var(--secondary);"></i> Nhật Ký & L�9ch Sử Khám Sức Khỏe</h4>
+            <div id="health-timeline-container"></div>
+          </div>
+        </section>
+
+        <!-- VIEW 4: CARE SCHEDULES -->
+        <section id="view-schedules" class="app-view" style="display:none;">
+          <div class="card-header-flex">
+            <!-- View Tabs -->
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="btn btn-outline schedule-view-btn active" data-range="all">Tất cả</button>
+              <button class="btn btn-outline schedule-view-btn" data-range="today">�x& Hôm nay</button>
+              <button class="btn btn-outline schedule-view-btn" data-range="week">�x  Tuần này</button>
+              <button class="btn btn-outline schedule-view-btn" data-range="month">�x️ Tháng này</button>
+              <button class="btn btn-outline schedule-view-btn" data-range="overdue">�a�️ Quá hạn</button>
+            </div>
+
+            <div style="display:flex; gap:10px;">
+              <!-- AI Auto Generator Button -->
+              <button id="open-ai-gen-modal-btn" class="btn btn-secondary" style="background:linear-gradient(135deg, #10b981, #06b6d4);">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> AI Sinh L�9ch Tự Đ�"ng
+              </button>
+
+              <button id="open-add-schedule-btn" class="btn btn-primary">
+                <i class="fa-solid fa-calendar-plus"></i> Tạo L�9ch Thủ Công
+              </button>
+            </div>
+          </div>
+
+          <!-- Filters Bar -->
+          <div class="card-box" style="padding:16px; margin-bottom:20px; display:flex; gap:16px; flex-wrap:wrap; align-items:center;">
+            <select id="schedule-category-filter" class="form-control" style="width:180px;">
+              <option value="ALL">-- Tất cả công vi�!c --</option>
+              <option value="CHO_�N">�x�� Cho Ēn</option>
+              <option value="TẮM">�x�� Tắm rửa</option>
+              <option value="CẮT_M�NG">�S️ Cắt móng / Grooming</option>
+              <option value="TẨY_GIUN">�x�� Tẩy giun</option>
+              <option value="TI�`M_PH�NG">�x0 Tiêm phòng</option>
+              <option value="KHÁM_SỨC_KH�}E">�x�� Khám sức khỏe</option>
+              <option value="UỐNG_THUỐC">�x` U�ng thu�c</option>
+              <option value="DẮT_ĐI_DẠO">�x�� Dắt �i dạo</option>
+            </select>
+
+            <select id="schedule-priority-filter" class="form-control" style="width:160px;">
+              <option value="ALL">-- Mức ưu tiên --</option>
+              <option value="KHẨN_CẤP">�x� Khẩn cấp</option>
+              <option value="CAO">�xx� Cao</option>
+              <option value="TRUNG_B�RNH">�xx� Trung bình</option>
+              <option value="THẤP">�xx� Thấp</option>
+            </select>
+
+            <input type="text" id="schedule-search-input" class="form-control" placeholder="Tìm theo tên l�9ch..." style="width:220px;">
+          </div>
+
+          <!-- Schedule Items List -->
+          <div id="schedule-list-container"></div>
+        </section>
+
+        <!-- VIEW 5: ADMIN USERS MANAGEMENT -->
+        <section id="view-admin-users" class="app-view" style="display:none;">
+          <div class="card-box">
+            <div class="card-header-flex">
+              <h3><i class="fa-solid fa-users-gear" style="color:var(--primary);"></i> Quản Lý Danh Sách Người Dùng</h3>
+              <button id="open-add-user-btn" class="btn btn-primary">
+                <i class="fa-solid fa-user-plus"></i> Thêm User M�:i
+              </button>
+            </div>
+
+            <div class="table-responsive">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>Avatar & Họ Tên</th>
+                    <th>Email</th>
+                    <th>Vai Trò</th>
+                    <th>Trạng Thái</th>
+                    <th>S� Thú Cưng</th>
+                    <th>Hành Đ�"ng</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-users-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 6: ADMIN ALL PETS -->
+        <section id="view-admin-pets" class="app-view" style="display:none;">
+          <div class="card-box">
+            <div class="card-header-flex">
+              <h3><i class="fa-solid fa-shield-cat" style="color:var(--secondary);"></i> Quản Lý Tất Cả Thú Cưng H�! Th�ng</h3>
+              <input type="text" id="admin-pet-search" class="form-control" placeholder="Tìm tên thú cưng hoặc chủ nuôi..." style="width:280px;">
+            </div>
+
+            <div class="table-responsive">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>Mã & Ảnh</th>
+                    <th>Tên Thú Cưng</th>
+                    <th>Loài / Gi�ng</th>
+                    <th>Chủ Nuôi</th>
+                    <th>Cân Nặng</th>
+                    <th>Tình Trạng Sức Khỏe</th>
+                    <th>Hành Đ�"ng</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-pets-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 7: AI PET ASSISTANT CHATBOT -->
+        <section id="view-ai-assistant" class="app-view" style="display:none;">
+          <div class="card-box" style="margin-bottom:16px; background:linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%); color:#fff;">
+            <h3 style="font-size:22px; font-weight:700;"><i class="fa-solid fa-robot"></i> Trợ Lý AI ChĒm Sóc Thú Cưng</h3>
+            <p style="font-size:14px; opacity:0.9;">Hỏi �áp thông minh về dinh dưỡng, l�9ch tiêm phòng, tẩy giun và cách chĒm sóc thú cưng của bạn.</p>
+          </div>
+
+          <!-- Quick Suggestion Buttons -->
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px;">
+            <button class="btn btn-outline ai-quick-prompt" data-prompt="L�9ch tiêm phòng vắc xin chuẩn cho chó mèo g�m những gì?">
+              �x0 L�9ch tiêm vắc xin
+            </button>
+            <button class="btn btn-outline ai-quick-prompt" data-prompt="Chế ��" dinh dưỡng và thức Ēn phù hợp cho mèo cưng?">
+              �x� Dinh dưỡng cho mèo
+            </button>
+            <button class="btn btn-outline ai-quick-prompt" data-prompt="Bao lâu thì nên tẩy giun và tắm cho chó m�"t lần?">
+              �x�� L�9ch tẩy giun & tắm rửa
+            </button>
+          </div>
+
+          <!-- Chat Window -->
+          <div class="chat-container">
+            <div id="chat-messages-box" class="chat-messages">
+              <div class="chat-bubble bot">
+                �x� Xin chào! Tôi là Trợ Lý AI ChĒm Sóc Thú Cưng. Hãy chọn thú cưng của bạn và nhập câu hỏi �Ồ nhận tư vấn nhé!
+                <br><br>
+                <small>�a�️ <i>Lưu ý: Thông tin do AI tư vấn mang tính chất tham khảo, không thay thế chẩn �oán của bác sĩ thú y.</i></small>
+              </div>
+            </div>
+
+            <div class="chat-input-area">
+              <input type="text" id="chat-user-input" class="form-control" placeholder="Nhập thắc mắc của bạn về chĒm sóc thú cưng...">
+              <button id="send-chat-btn" class="btn btn-primary">
+                <i class="fa-solid fa-paper-plane"></i> Gửi AI
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 8: USER PROFILE -->
+        <section id="view-profile" class="app-view" style="display:none;">
+          <div class="card-box" style="max-width: 600px; margin: 0 auto;">
+            <div class="card-header-flex">
+              <h3><i class="fa-solid fa-id-badge" style="color:var(--primary);"></i> H� Sơ Cá Nhân</h3>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 24px;">
+              <div style="position: relative; margin-bottom: 16px;">
+                <img id="profile-avatar-preview" src="" alt="Avatar" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid var(--bg-main); box-shadow: var(--shadow-md);">
+                <label for="profile-avatar-file" style="position: absolute; bottom: 0; right: 0; background: var(--primary); color: #fff; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 3px solid #fff; box-shadow: var(--shadow-sm); transition: var(--transition);">
+                  <i class="fa-solid fa-camera"></i>
+                </label>
+                <input type="file" id="profile-avatar-file" accept="image/png, image/jpeg, image/jpg" style="display: none;">
+              </div>
+              <h4 id="profile-name-display" style="font-size: 20px; font-weight: 800;">Username</h4>
+              <span id="profile-role-display" style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Role</span>
+            </div>
+
+            <form id="profile-form">
+              <div class="form-group">
+                <label>Họ và Tên</label>
+                <input type="text" id="profile-name" class="form-control" disabled>
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="profile-email" class="form-control" disabled>
+              </div>
+              
+              <div id="profile-actions" style="display: none; gap: 12px; margin-top: 24px;">
+                <button type="submit" class="btn btn-primary" style="flex: 1;">
+                  <i class="fa-solid fa-floppy-disk"></i> Lưu ảnh �ại di�!n
+                </button>
+                <button type="button" id="profile-cancel-btn" class="btn btn-outline" style="flex: 1;">
+                  Hủy
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- MODALS SECTION -->
+
+  <!-- Modal 1: Add / Edit Pet -->
+  <div id="modal-pet" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-pet-title">Thêm Thú Cưng M�:i</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-pet')">&times;</button>
+      </div>
+      <form id="pet-form">
+        <input type="hidden" id="pet-form-id">
+        <div class="form-group">
+          <label>Tên Thú Cưng *</label>
+          <input type="text" id="pet-form-name" class="form-control" placeholder="Ví dụ: Mật, Luna, Cún..." required>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Loài *</label>
+            <select id="pet-form-species" class="form-control">
+              <option value="Chó">�x�� Chó</option>
+              <option value="Mèo">�x�� Mèo</option>
+              <option value="Khác">�x�� Khác</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Gi�ng</label>
+            <input type="text" id="pet-form-breed" class="form-control" placeholder="Golden, Poodle, Anh lông ngắn...">
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Gi�:i tính</label>
+            <select id="pet-form-gender" class="form-control">
+              <option value="Đực">Đực</option>
+              <option value="Cái">Cái</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Ngày sinh</label>
+            <input type="date" id="pet-form-dob" class="form-control">
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Cân nặng (kg)</label>
+            <input type="number" step="0.1" id="pet-form-weight" class="form-control" placeholder="VD: 4.5">
+          </div>
+          <div class="form-group">
+            <label>Màu lông</label>
+            <input type="text" id="pet-form-color" class="form-control" placeholder="Vàng, Xám, Nâu...">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Ảnh �ại di�!n (JPG/PNG)</label>
+          <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start;">
+            <input type="file" id="pet-form-photo-file" class="form-control" accept="image/png, image/jpeg, image/jpg" style="padding: 6px;">
+            <input type="hidden" id="pet-form-photo">
+            <img id="pet-photo-preview" src="" alt="Preview" style="max-width: 150px; max-height: 150px; display: none; border-radius: 8px; border: 1px solid var(--border);">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Tình trạng sức khỏe</label>
+          <select id="pet-form-health" class="form-control">
+            <option value="Khỏe mạnh">�xx� Khỏe mạnh</option>
+            <option value="Cần theo dõi">�xx� Cần theo dõi</option>
+            <option value="Đang �iều tr�9">�x� Đang �iều tr�9</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Ghi chú</label>
+          <textarea id="pet-form-notes" class="form-control" rows="2" placeholder="Thói quen, d�9 ứng thức Ēn..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">
+          <i class="fa-solid fa-floppy-disk"></i> Lưu Thông Tin Thú Cưng
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2: Add / Edit Schedule -->
+  <div id="modal-schedule" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-schedule-title">Tạo L�9ch ChĒm Sóc M�:i</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-schedule')">&times;</button>
+      </div>
+      <form id="schedule-form">
+        <input type="hidden" id="schedule-form-id">
+        <div class="form-group">
+          <label>Thú Cưng *</label>
+          <select id="schedule-form-pet" class="form-control" required></select>
+        </div>
+        <div class="form-group">
+          <label>Tên Công Vi�!c *</label>
+          <input type="text" id="schedule-form-name" class="form-control" placeholder="Cho Ēn, Tắm rửa, U�ng thu�c..." required>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Loại chĒm sóc</label>
+            <select id="schedule-form-category" class="form-control">
+              <option value="CHO_�N">�x�� Cho Ēn</option>
+              <option value="TẮM">�x�� Tắm rửa</option>
+              <option value="CẮT_M�NG">�S️ Cắt móng / Grooming</option>
+              <option value="CHẢI_L�NG">�x�� Chải lông</option>
+              <option value="TẨY_GIUN">�x�� Tẩy giun</option>
+              <option value="TI�`M_PH�NG">�x0 Tiêm phòng</option>
+              <option value="KHÁM_SỨC_KH�}E">�x�� Khám sức khỏe</option>
+              <option value="UỐNG_THUỐC">�x` U�ng thu�c</option>
+              <option value="DẮT_ĐI_DẠO">�x�� Dắt �i dạo</option>
+              <option value="KHÁC">�xR Khác</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Mức ưu tiên</label>
+            <select id="schedule-form-priority" class="form-control">
+              <option value="TRUNG_B�RNH">�xx� Trung bình</option>
+              <option value="CAO">�xx� Cao</option>
+              <option value="KHẨN_CẤP">�x� Khẩn cấp</option>
+              <option value="THẤP">�xx� Thấp</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Ngày thực hi�!n *</label>
+            <input type="date" id="schedule-form-date" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>Giờ thực hi�!n *</label>
+            <input type="time" id="schedule-form-time" class="form-control" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Mô tả chi tiết</label>
+          <textarea id="schedule-form-desc" class="form-control" rows="2" placeholder="Liều lượng, hư�:ng dẫn thêm..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">
+          <i class="fa-solid fa-calendar-check"></i> Lưu L�9ch ChĒm Sóc
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: AI Auto Generator Modal -->
+  <div id="modal-ai-gen" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--secondary);"></i> AI Sinh L�9ch ChĒm Sóc Tự Đ�"ng</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-ai-gen')">&times;</button>
+      </div>
+      <p style="font-size:14px; color:var(--text-muted); margin-bottom:16px;">
+        Trợ lý AI sẽ tự ��"ng phân tích ��" tu�"i, loài và cân nặng của thú cưng �Ồ sinh ngay b�" l�9ch chuẩn: Cho Ēn hàng ngày, Tắm rửa hàng tuần, Cắt móng và Tẩy giun ��9nh kỳ.
+      </p>
+      <form id="ai-gen-form">
+        <div class="form-group">
+          <label>Chọn Thú Cưng Cần Sinh L�9ch *</label>
+          <select id="ai-gen-pet-select" class="form-control" required></select>
+        </div>
+        <button type="submit" class="btn btn-secondary" style="width:100%; background:linear-gradient(135deg, #10b981, #06b6d4);">
+          <i class="fa-solid fa-bolt"></i> Kích Hoạt AI Tạo L�9ch 30 Ngày
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 4: Add Health Record -->
+  <div id="modal-health" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Thêm H� Sơ Sức Khỏe / Tiêm Phòng</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-health')">&times;</button>
+      </div>
+      <form id="health-form">
+        <div class="form-group">
+          <label>Thú Cưng *</label>
+          <select id="health-form-pet" class="form-control" required></select>
+        </div>
+        <div class="form-group">
+          <label>Loại H� Sơ *</label>
+          <select id="health-form-type" class="form-control">
+            <option value="KHÁM_SỨC_KH�}E">�x�� Khám sức khỏe ��9nh kỳ</option>
+            <option value="TI�`M_PH�NG">�x0 Tiêm phòng vắc xin</option>
+            <option value="TẨY_GIUN">�x�� Tẩy giun</option>
+            <option value="THUỐC">�x` Kê �ơn thu�c</option>
+            <option value="B� NH_LÝ">�xa� Chẩn �oán b�!nh lý</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tiêu Đề H� Sơ *</label>
+          <input type="text" id="health-form-title" class="form-control" placeholder="Tiêm vắc xin 7 b�!nh, Khám t�"ng quát..." required>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Ngày khám / Tiêm</label>
+            <input type="date" id="health-form-date" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>Cân nặng lúc khám (kg)</label>
+            <input type="number" step="0.1" id="health-form-weight" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Bác sĩ / Người thực hi�!n</label>
+          <input type="text" id="health-form-doctor" class="form-control" placeholder="BS. Nguy�&n VĒn A / Phòng khám PetCare">
+        </div>
+        <div class="form-group">
+          <label>Chi tiết / Ghi chú của bác sĩ</label>
+          <textarea id="health-form-desc" class="form-control" rows="3" placeholder="Kết quả xét nghi�!m, phản ứng sau tiêm, ch�0 ��9nh dặn dò..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">
+          <i class="fa-solid fa-file-medical"></i> Lưu H� Sơ Sức Khỏe
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 5: Admin Add/Edit User -->
+  <div id="modal-admin-user" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-user-title">Thêm / Sửa Người Dùng</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-admin-user')">&times;</button>
+      </div>
+      <form id="admin-user-form">
+        <input type="hidden" id="admin-user-id">
+        <div class="form-group">
+          <label>Họ và Tên *</label>
+          <input type="text" id="admin-user-name" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" id="admin-user-email" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label>Mật khẩu (ĐỒ tr�ng nếu không ��"i)</label>
+          <input type="password" id="admin-user-pass" class="form-control" placeholder="⬢⬢⬢⬢⬢⬢⬢⬢">
+        </div>
+        <div class="form-group">
+          <label>Ảnh �ại di�!n (JPG/PNG)</label>
+          <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start;">
+            <input type="file" id="admin-user-avatar-file" class="form-control" accept="image/png, image/jpeg, image/jpg" style="padding: 6px;">
+            <input type="hidden" id="admin-user-avatar">
+            <img id="admin-user-avatar-preview" src="" alt="Preview" style="max-width: 150px; max-height: 150px; display: none; border-radius: 8px; border: 1px solid var(--border); object-fit: cover;">
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Phân quyền</label>
+            <select id="admin-user-role" class="form-control">
+              <option value="USER">USER (Chủ nuôi)</option>
+              <option value="ADMIN">ADMIN (Quản tr�9 viên)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Trạng thái</label>
+            <select id="admin-user-status" class="form-control">
+              <option value="ACTIVE">Hoạt ��"ng</option>
+              <option value="LOCKED">B�9 khóa</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">
+          <i class="fa-solid fa-user-check"></i> Lưu Người Dùng
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 6: Notifications Modal -->
+  <div id="modal-notif" class="modal-overlay">
+    <div class="modal-card" style="max-width:480px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-bell" style="color:var(--accent);"></i> Thông Báo & Nhắc L�9ch</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-notif')">&times;</button>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span style="font-size:13px; color:var(--text-muted);">Các nhắc nh�x công vi�!c chĒm sóc</span>
+        <button id="mark-all-read-btn" class="btn btn-outline btn-sm">Đánh dấu �ã �ọc tất cả</button>
+      </div>
+      <div id="notif-list-box" style="max-height:350px; overflow-y:auto;"></div>
+    </div>
+  </div>
+
+  <!-- App Main Scripts -->
+  <script src="/js/utils.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/dashboard.js"></script>
+  <script src="/js/pets.js"></script>
+  <script src="/js/health.js"></script>
+  <script src="/js/schedule.js"></script>
+  <script src="/js/admin.js"></script>
+  <script src="/js/ai.js"></script>
+  <script src="/js/profile.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
+

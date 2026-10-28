@@ -1,0 +1,95 @@
+HỆ THỐNG QUẢN LÝ VÀ CHĂM SÓC THÚ CƯNG SEN CHĂM BOSS
+
+1. Danh sách chức năng của website Sen Chăm Boss
+
+Website Sen Chăm Boss cung cấp giải pháp toàn diện cho việc chăm sóc thú cưng với 11 chức năng chính:
+1. Quản lý Thú cưng: Thêm mới, chỉnh sửa hồ sơ, theo dõi cân nặng, độ tuổi, giống loài và thể trạng của Boss.
+2. Hồ sơ Sức khỏe & Sổ tiêm chủng: Lưu trữ toàn bộ lịch sử khám bệnh, nhật ký điều trị, lịch tiêm phòng vắc-xin và tẩy giun định kỳ.
+3. Lập & Theo dõi Lịch chăm sóc: Lên lịch hàng ngày/tuần về ăn uống, tắm rửa, cắt móng, uống thuốc cho từng bé.
+4. Đặt lịch dịch vụ trực tuyến: Cho phép chủ nuôi chủ động đặt lịch hẹn Spa, Khám chữa bệnh, Cắt tỉa lông hoặc Khách sạn lưu chuồng theo ngày giờ mong muốn.
+5. Dịch Vụ & Bảng Giá Gói Chăm Sóc: Niêm yết công khai danh mục các gói chăm sóc, giá cả minh bạch và thời gian thực hiện.
+6. Lập Hóa Đơn & Theo Dõi Thanh Toán: Xem chi tiết hóa đơn dịch vụ, lịch sử giao dịch và hỗ trợ đa phương thức thanh toán (Tiền mặt, Chuyển khoản VietQR, Ví điện tử).
+7. Tin nhắn & Hỗ trợ trực tuyến: Trao đổi trực tiếp 1-1 giữa Chủ nuôi với Đội ngũ Lễ tân, Nhân viên chăm sóc và Bác sĩ thú y.
+8. Trợ lý AI Thông minh (RAG): Giải đáp thắc mắc, tư vấn chăm sóc sức khỏe, hướng dẫn sử dụng website và tra cứu thông tin cá nhân của chủ nuôi.
+9. Cửa hàng thú cưng (Pet Shop): Cung cấp thức ăn dinh dưỡng, phụ kiện, đồ chơi và các sản phẩm chăm sóc thú cưng chính hãng.
+10. Quản lý Tài khoản & Điểm thưởng: Cập nhật thông tin liên hệ, xem hạng thành viên (Silver, Gold, Platinum) và tích lũy điểm thưởng.
+11. Quản trị & Phân quyền hệ thống: Dành cho Admin, Lễ tân và Nhân viên chăm sóc quản lý doanh thu, phân công lịch hẹn và duyệt đơn.
+
+2. Dịch vụ và Bảng giá niêm yết tại Sen Chăm Boss
+
+Bảng giá các dịch vụ chăm sóc thú cưng chính thức của Sen Chăm Boss được áp dụng như sau:
+
+- Tắm & Spa Thư Giãn: 150.000 VNĐ (Thời gian: 45-60 phút). Mô tả: Tắm sấy khử mùi, vắt tuyến hôi, sấy phồng lông bằng sữa tắm thảo dược tự nhiên cao cấp.
+- Cắt Tỉa Lông & Tạo Kiểu (Grooming): 250.000 VNĐ (Thời gian: 60-90 phút). Mô tả: Tạo kiểu chuyên nghiệp (Teddy, Boo, cạo vệ sinh), chải mượt gỡ rối và xịt dưỡng lông hương thơm dịu nhẹ.
+- Cắt Móng & Vệ Sinh Tai: 60.000 VNĐ (Thời gian: 15-20 phút). Mô tả: Cắt mài móng an toàn, nhổ lông tai, làm sạch sâu và nhỏ thuốc chống viêm tai cho thú cưng.
+- Khám Sức Khỏe Tổng Quát: 120.000 VNĐ (Thời gian: 30 phút). Mô tả: Kiểm tra tim mạch, hô hấp, da lông, mắt mũi họng, đo thân nhiệt và tư vấn chế độ dinh dưỡng y khoa.
+- Tiêm Phòng Vắc-xin Định Kỳ: 200.000 VNĐ (Thời gian: 15 phút). Mô tả: Tiêm vắc-xin phòng bệnh (5 bệnh, 7 bệnh cho chó; 4 bệnh cho mèo; vắc-xin dại) kèm sổ tiêm chủng chính thức.
+- Tẩy Giun Định Kỳ: 50.000 VNĐ (Thời gian: 10 phút). Mô tả: Cho uống thuốc tẩy giun phổ rộng (Drontal, Endogard, Sanpet) chuẩn liều lượng theo cân nặng của bé.
+- Khách Sạn & Lưu Chuồng Thú Cưng: 180.000 VNĐ/ngày (Thời gian: 24 giờ). Mô tả: Phòng máy lạnh riêng biệt, camera giám sát 24/7, chế độ ăn hạt/pate cao cấp và lịch đi dạo vận động mỗi ngày.
+
+3. Quy trình đặt lịch dịch vụ tại Sen Chăm Boss
+
+Quy trình đặt lịch chăm sóc thú cưng gồm 4 bước đơn giản:
+• Bước 1: Chủ nuôi đăng nhập vào website, vào mục "Đặt lịch chăm sóc" hoặc bấm nút "Đặt lịch ngay".
+• Bước 2: Chọn bé thú cưng cần chăm sóc, chọn dịch vụ mong muốn (Spa, Cắt tỉa, Khám bệnh, Tiêm phòng...) và chọn chi nhánh/nhân viên phụ trách nếu có nhu cầu.
+• Bước 3: Chọn ngày hẹn và khung giờ phù hợp, ghi chú các lưu ý đặc biệt về bé (nếu có), sau đó bấm "Xác nhận đặt lịch".
+• Bước 4: Hệ thống tự động ghi nhận đơn đặt lịch với trạng thái "Chờ xác nhận" (PENDING). Bộ phận Lễ tân sẽ kiểm tra, xác nhận lịch hẹn và gửi thông báo cho chủ nuôi.
+
+4. Quy định Hủy lịch và Thay đổi lịch hẹn của Khách hàng
+
+• Khách hàng (Chủ nuôi / User) có quyền hủy lịch hẹn hoặc đổi lịch khi lịch đang ở trạng thái "Chờ xác nhận" (PENDING), tức là trước khi nhân viên/lễ tân xác nhận lịch.
+• Sau khi Lễ tân / Nhân viên đã xác nhận lịch (CONFIRMED) hoặc lịch đang được thực hiện (IN_PROGRESS) hoặc đã hoàn tất (COMPLETED), khách hàng KHÔNG thể tự hủy hoặc đổi lịch trên website. Nếu có việc đột xuất, khách hàng cần liên hệ trực tiếp với Lễ tân hoặc Hotline của Sen Chăm Boss để được hỗ trợ.
+• Nhân viên Lễ tân (RECEPTIONIST), Quản lý cửa hàng (STORE_MANAGER) và Quản trị viên (ADMIN) có quyền hủy lịch hẹn trên hệ thống.
+• Nhân viên chăm sóc (CARE_STAFF) không có quyền tự hủy lịch hẹn mà phải thông báo Lễ tân hoặc Quản lý xử lý.
+
+5. Quy định Quản lý Hóa đơn & Phương thức Thanh toán
+
+Sen Chăm Boss hỗ trợ quy trình thanh toán nhanh chóng, an toàn và minh bạch:
+• Hóa đơn tự động: Mỗi lịch hẹn hoàn thành hoặc đơn hàng tại Pet Shop đều được tự động tạo hóa đơn chi tiết kèm mã hóa đơn (ví dụ: HD-2026-001).
+• Phương thức thanh toán:
+  + Chuyển khoản ngân hàng VietQR: Quét mã VietQR trên giao diện thanh toán để chuyển khoản chính xác số tiền và nội dung.
+  + Tiền mặt trực tiếp tại quầy Lễ tân của cơ sở.
+• Phân quyền Hóa đơn và Thanh toán:
+  + Khách hàng (User): Được xem danh sách hóa đơn của chính mình và thực hiện thanh toán online (VietQR) hoặc chọn trả tiền mặt.
+  + Lễ tân (Receptionist) và Admin: Quản lý danh sách hóa đơn, lập hóa đơn, thu tiền tại quầy và xác nhận trạng thái ĐÃ THANH TOÁN.
+  + Quản trị viên (Admin): Là người duy nhất có quyền Xóa hóa đơn khỏi hệ thống.
+  + Nhân viên chăm sóc (Care Staff): Không có quyền quản lý hay xóa hóa đơn.
+
+6. Quyền hạn của từng vai trò / tác nhân trong hệ thống (RBAC)
+
+• Quản trị viên (Admin):
+  - Có toàn quyền quản trị cao nhất trong toàn bộ hệ thống Sen Chăm Boss.
+  - Quản lý và phân quyền tài khoản người dùng, nhân viên, lễ tân.
+  - Thêm mới, chỉnh sửa và XÓA DỊCH VỤ, gói dịch vụ chăm sóc.
+  - Xóa hóa đơn thanh toán.
+  - Xem báo cáo tài chính, thống kê doanh thu toàn hệ thống.
+• Lễ tân (Receptionist):
+  - Tiếp đón khách hàng, duyệt và xác nhận các lịch hẹn đặt từ khách hàng.
+  - Phân công nhân viên chăm sóc cho từng ca lịch hẹn.
+  - Lập hóa đơn và xác nhận thanh toán tiền mặt/chuyển khoản tại quầy.
+  - Hủy lịch hẹn khi khách hàng yêu cầu hỗ trợ.
+• Nhân viên chăm sóc (Care Staff / Groomer / Thú y):
+  - Xem danh sách lịch hẹn được phân công thực hiện.
+  - Ghi chép nhật ký sức khỏe, lịch sử chăm sóc, cập nhật tình trạng trước/sau dịch vụ.
+  - Cập nhật tiến độ thực hiện dịch vụ (Bắt đầu chăm sóc -> Hoàn thành).
+  - Không có quyền hủy lịch, không có quyền xóa dịch vụ hay xóa hóa đơn.
+• Khách hàng / Chủ nuôi (User):
+  - Quản lý hồ sơ các bé thú cưng của mình.
+  - Đặt lịch hẹn chăm sóc, xem lịch chăm sóc và sổ sức khỏe của thú cưng.
+  - Hủy/đổi lịch hẹn trước khi lễ tân xác nhận (ở trạng thái PENDING).
+  - Xem hóa đơn cá nhân và thanh toán qua VietQR hoặc tiền mặt.
+  - Nhắn tin trực tuyến với cơ sở và mua sắm tại Pet Shop.
+
+7. Hướng dẫn Quản lý hồ sơ Thú cưng
+
+Chủ nuôi có thể dễ dàng quản lý thông tin các bé Boss:
+• Thêm hồ sơ thú cưng: Nhập tên, loài (Chó/Mèo), giống loài, giới tính, ngày sinh/độ tuổi, cân nặng và ảnh đại diện của bé.
+• Cập nhật tình trạng sức khỏe: Ghi nhận tình trạng hiện tại (Khỏe mạnh, Đang theo dõi, Cần chăm sóc đặc biệt) và các ghi chú dị ứng thức ăn/thuốc.
+• Theo dõi lịch sử chăm sóc: Xem toàn bộ các lần đi Spa, khám bệnh, tiêm chủng và sử dụng dịch vụ trước đây.
+
+8. Cẩm nang Hướng dẫn Chăm sóc & Dinh dưỡng Boss
+
+• Dinh dưỡng cân bằng: Cho cún và mèo ăn khẩu phần giàu đạm (thịt nạc, ức gà, cá hồi, pate chuyên dụng), bổ sung rau củ xay nhuyễn và luôn cung cấp nước sạch.
+• Thức ăn cấm kỵ: Tuyệt đối KHÔNG cho thú cưng ăn sô-cô-la, hành tây, tỏi, nho tươi/nho khô, thức ăn quá mặn, đồ ngọt nhân tạo hoặc xương dăm sắc nhọn.
+• Vệ sinh thân thể: Tắm cho cún 1-2 tuần/lần, mèo 1-2 tháng/lần; sau khi tắm cần sấy khô triệt để và lau khô vành tai để ngăn ngừa nấm da và viêm tai.
+• Phòng bệnh định kỳ: Tiêm phòng nhắc lại hàng năm vắc-xin 7 bệnh cho chó, 4 bệnh cho mèo và vắc-xin dại. Tẩy giun định kỳ 3 tháng/lần đối với bé dưới 1 tuổi và 6 tháng/lần đối với bé trưởng thành.

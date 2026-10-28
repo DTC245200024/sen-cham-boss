@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cổng Thanh Toán Online An Toàn | Sen Chăm Boss Pay</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #f97316;
+      --primary-dark: #ea580c;
+      --secondary: #0284c7;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --warning: #d97706;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 24px 16px; }
+    
+    .gateway-container { width: 100%; max-width: 640px; margin: 0 auto; }
+    .gateway-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .gateway-brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 19px; color: var(--primary); }
+    .gateway-security { font-size: 12px; color: var(--success); display: flex; align-items: center; gap: 6px; font-weight: 700; background: #ecfdf5; padding: 5px 12px; border-radius: 20px; border: 1px solid #a7f3d0; }
+    
+    .card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(15,23,42,0.05); padding: 24px; margin-bottom: 18px; }
+    
+    .order-summary-box { background: linear-gradient(135deg, #fff7ed, #ffedd5); border: 1px solid #fed7aa; border-radius: 12px; padding: 18px; margin-bottom: 20px; }
+    .order-summary-title { font-size: 12px; color: #9a3412; font-weight: 800; text-transform: uppercase; margin-bottom: 6px; }
+    .order-amount { font-size: 28px; font-weight: 900; color: #c2410c; margin-bottom: 8px; }
+    .order-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 13px; }
+    .order-meta-item span { color: var(--text-muted); }
+    .order-meta-item strong { color: var(--text); }
+    
+    .timer-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: #b45309; background: #fef3c7; padding: 4px 12px; border-radius: 16px; margin-top: 10px; border: 1px solid #fde68a; }
+    
+    .payment-tabs { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 8px; overflow-x: auto; }
+    .pay-tab { padding: 10px 16px; border: 1px solid transparent; background: #f1f5f9; font-size: 13px; font-weight: 700; color: var(--text-muted); cursor: pointer; border-radius: 8px; display: flex; align-items: center; gap: 8px; white-space: nowrap; transition: 0.2s; }
+    .pay-tab.active { background: #fff7ed; color: var(--primary); border-color: #fdba74; }
+    
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.2s ease; }
+    
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .qr-box { text-align: center; padding: 18px; background: #f8fafc; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 18px; }
+    .qr-img { width: 220px; height: 220px; object-fit: contain; border-radius: 10px; border: 1px solid #e2e8f0; background: #fff; padding: 8px; margin: 12px auto; display: block; }
+    
+    .bank-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+    .bank-item { border: 1px solid var(--border); border-radius: 8px; padding: 10px 6px; text-align: center; font-size: 12px; font-weight: 700; cursor: pointer; background: #fff; transition: 0.2s; }
+    .bank-item:hover, .bank-item.selected { border-color: var(--primary); background: #fff7ed; color: var(--primary); }
+    
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    .form-control { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; }
+    .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(249,115,22,0.15); }
+    
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 20px; font-size: 15px; font-weight: 800; border-radius: 10px; border: none; cursor: pointer; transition: 0.2s; width: 100%; }
+    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; }
+    .btn-primary:hover { opacity: 0.95; transform: translateY(-1px); }
+    .btn-secondary { background: #f1f5f9; color: var(--text); margin-top: 10px; }
+    .btn-secondary:hover { background: #e2e8f0; }
+    .btn-danger-outline { background: transparent; border: 1px solid var(--danger); color: var(--danger); margin-top: 10px; }
+    .btn-danger-outline:hover { background: #fef2f2; }
+    
+    .footer-note { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 20px; line-height: 1.6; }
+    
+    .status-screen { text-align: center; padding: 30px 16px; }
+    .status-icon { font-size: 52px; margin-bottom: 16px; }
+    
+    .test-mode-banner { background: #f0fdf4; border: 1px dashed #86efac; border-radius: 8px; padding: 8px 12px; margin-bottom: 14px; font-size: 12px; color: #166534; display: flex; align-items: center; justify-content: space-between; }
+  </style>
+</head>
+<body>
+
+  <div class="gateway-container">
+    <!-- Header -->
+    <div class="gateway-header">
+      <div class="gateway-brand">
+        <i class="fa-solid fa-shield-cat" style="font-size:24px;"></i>
+        <span>Sen Chăm Boss Pay</span>
+      </div>
+      <div class="gateway-security">
+        <i class="fa-solid fa-lock"></i>
+        <span>Bảo mật 256-bit SSL</span>
+      </div>
+    </div>
+
+    <!-- Main Payment Card -->
+    <div class="card" id="main-payment-card">
+      
+      <!-- 1. LOADING STATE -->
+      <div id="loading-state" style="text-align:center; padding:50px 20px;">
+        <i class="fa-solid fa-circle-notch fa-spin" style="font-size:36px; color:var(--primary); margin-bottom:16px;"></i>
+        <h3 style="font-size:16px; font-weight:800; color:var(--text); margin-bottom:6px;">Đang kết nối cổng thanh toán an toàn...</h3>
+        <p style="font-size:13px; color:var(--text-muted);">Vui lòng chờ trong giây lát</p>
+      </div>
+
+      <!-- 2. ERROR STATE (If Gateway connection fails / timeout) -->
+      <div id="error-state" style="display:none; text-align:center; padding:40px 20px;">
+        <div style="width:64px; height:64px; border-radius:50%; background:#fee2e2; color:var(--danger); display:flex; align-items:center; justify-content:center; font-size:30px; margin:0 auto 16px;">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h3 style="font-size:18px; font-weight:800; color:var(--danger); margin-bottom:8px;">Không thể kết nối cổng thanh toán</h3>
+        <p id="error-msg-text" style="font-size:14px; color:var(--text-muted); margin-bottom:24px; line-height:1.5;">Vui lòng kiểm tra lại kết nối mạng hoặc thử lại sau.</p>
+        
+        <div style="display:flex; gap:10px; max-width:360px; margin:0 auto; flex-direction:column;">
+          <button class="btn btn-primary" onclick="initGateway()">
+            <i class="fa-solid fa-rotate-right"></i> Thử lại
+          </button>
+          <button class="btn btn-secondary" onclick="returnToApp()">
+            <i class="fa-solid fa-arrow-left"></i> Quay lại đơn hàng
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. PAYMENT CONTENT -->
+      <div id="payment-content" style="display:none;">
+        
+        <!-- Dev / Test Mode Badge -->
+        <div class="test-mode-banner">
+          <span><i class="fa-solid fa-flask"></i> <strong>Chế độ thanh toán:</strong> Tích hợp tự động Cổng Napas / VietQR</span>
+          <span style="background:#dcfce7; font-weight:700; padding:2px 8px; border-radius:6px; font-size:11px;">Hoạt động</span>
+        </div>
+
+        <!-- Order Summary Box -->
+        <div class="order-summary-box">
+          <div class="order-summary-title">Thông tin thanh toán đơn hàng</div>
+          <div class="order-amount" id="disp-amount">0 ₫</div>
+          <div class="order-meta-grid">
+            <div class="order-meta-item"><span>Mã đơn:</span> <strong id="disp-order-code">N/A</strong></div>
+            <div class="order-meta-item"><span>Khách hàng:</span> <strong id="disp-customer">N/A</strong></div>
+          </div>
+          <div class="timer-badge">
+            <i class="fa-regular fa-clock"></i>
+            <span>Giao dịch hết hạn sau: <strong id="countdown-timer">15:00</strong></span>
+          </div>
+        </div>
+
+        <!-- Payment Method Tabs -->
+        <div class="payment-tabs">
+          <button class="pay-tab active" onclick="switchPayTab('tab-qr', this)">
+            <i class="fa-solid fa-qrcode"></i> Quét mã VietQR
+          </button>
+          <button class="pay-tab" onclick="switchPayTab('tab-atm', this)">
+            <i class="fa-solid fa-building-columns"></i> Thẻ ATM / Napas
+          </button>
+          <button class="pay-tab" onclick="switchPayTab('tab-visa', this)">
+            <i class="fa-brands fa-cc-visa"></i> Thẻ Quốc Tế
+          </button>
+        </div>
+
+        <!-- TAB 1: VIETQR -->
+        <div id="tab-qr" class="tab-content active">
+          <div class="qr-box">
+            <p style="font-size:13px; font-weight:700; color:var(--text);">Mở App Ngân Hàng hoặc Ví điện tử để quét mã QR</p>
+            <img id="vietqr-img" class="qr-img" src="" alt="VietQR Code">
+            <div style="font-size:12px; color:var(--text-muted);">Hỗ trợ 40+ ngân hàng Việt Nam (VCB, MB, TCB, ACB, BIDV, MoMo, ZaloPay...)</div>
+          </div>
+          
+          <button class="btn btn-primary" onclick="confirmPayment('SUCCESS', 'VIETQR')">
+            <i class="fa-solid fa-circle-check"></i> Tôi đã hoàn tất chuyển khoản
+          </button>
+        </div>
+
+        <!-- TAB 2: ATM NAPAS -->
+        <div id="tab-atm" class="tab-content">
+          <p style="font-size:13px; font-weight:700; margin-bottom:10px;">Chọn ngân hàng của bạn:</p>
+          <div class="bank-grid">
+            <div class="bank-item selected" onclick="selectBank(this, 'VCB')">Vietcombank</div>
+            <div class="bank-item" onclick="selectBank(this, 'TCB')">Techcombank</div>
+            <div class="bank-item" onclick="selectBank(this, 'MB')">MB Bank</div>
+            <div class="bank-item" onclick="selectBank(this, 'BIDV')">BIDV</div>
+            <div class="bank-item" onclick="selectBank(this, 'ACB')">ACB</div>
+            <div class="bank-item" onclick="selectBank(this, 'VPB')">VPBank</div>
+            <div class="bank-item" onclick="selectBank(this, 'TPB')">TPBank</div>
+            <div class="bank-item" onclick="selectBank(this, 'VIB')">VIB</div>
+          </div>
+          <div class="form-group">
+            <label>Số tài khoản / Số thẻ ATM (Nội địa)</label>
+            <input type="text" class="form-control" placeholder="9704 xxxx xxxx xxxx" value="9704 2200 1234 5678">
+          </div>
+          <div class="form-group">
+            <label>Tên chủ thẻ (không dấu)</label>
+            <input type="text" class="form-control" placeholder="NGUYEN VAN A" value="SEN CHAM BOSS USER">
+          </div>
+          <button class="btn btn-primary" onclick="confirmPayment('SUCCESS', 'ATM_NAPAS')">
+            <i class="fa-solid fa-lock"></i> Xác thực & Thanh toán ngay
+          </button>
+        </div>
+
+        <!-- TAB 3: VISA / MASTERCARD -->
+        <div id="tab-visa" class="tab-content">
+          <div class="form-group">
+            <label>Số thẻ Visa / Mastercard / JCB</label>
+            <input type="text" class="form-control" placeholder="4123 xxxx xxxx 8888" value="4123 4567 8901 8888">
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div class="form-group">
+              <label>Ngày hết hạn</label>
+              <input type="text" class="form-control" placeholder="MM/YY" value="12/28">
+            </div>
+            <div class="form-group">
+              <label>Mã bảo mật CVV/CVC</label>
+              <input type="password" class="form-control" placeholder="•••" value="123" maxlength="4">
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="confirmPayment('SUCCESS', 'INTERNATIONAL_CARD')">
+            <i class="fa-solid fa-lock"></i> Thanh toán an toàn 3D Secure
+          </button>
+        </div>
+
+        <!-- Cancel / Failed Test Buttons -->
+        <button class="btn btn-danger-outline" onclick="confirmPayment('CANCELLED', 'USER_CANCEL')">
+          <i class="fa-solid fa-xmark"></i> Hủy giao dịch & Quay lại
+        </button>
+      </div>
+
+      <!-- 4. RESULT SCREEN -->
+      <div id="result-screen" class="status-screen" style="display:none;"></div>
+    </div>
+
+    <div class="footer-note">
+      <i class="fa-solid fa-lock"></i> Giao dịch được mã hóa và xác minh bảo mật bởi Cổng Thanh Toán Sen Chăm Boss Pay.<br>
+      Chúng tôi tuyệt đối không lưu trữ thông tin thẻ ngân hàng hoặc CVV của quý khách.
+    </div>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentId = urlParams.get('payment_id');
+    const secureToken = urlParams.get('token');
+    let selectedBankCode = 'VCB';
+    let paymentData = null;
+    let timerInterval = null;
+
+    // Helper with AbortController timeout (8000ms)
+    async function fetchWithTimeout(resource, options = {}, timeoutMs = 8000) {
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        const response = await fetch(resource, {
+          ...options,
+          signal: controller.signal
+        });
+        clearTimeout(id);
+        return response;
+      } catch (err) {
+        clearTimeout(id);
+        throw err;
+      }
+    }
+
+    function showLoading(msg = 'Đang kết nối cổng thanh toán an toàn...') {
+      document.getElementById('loading-state').style.display = 'block';
+      document.getElementById('loading-state').querySelector('h3').textContent = msg;
+      document.getElementById('error-state').style.display = 'none';
+      document.getElementById('payment-content').style.display = 'none';
+      document.getElementById('result-screen').style.display = 'none';
+    }
+
+    function showError(message = 'Không thể kết nối cổng thanh toán. Vui lòng thử lại.') {
+      document.getElementById('loading-state').style.display = 'none';
+      document.getElementById('payment-content').style.display = 'none';
+      document.getElementById('result-screen').style.display = 'none';
+      
+      const errorEl = document.getElementById('error-state');
+      document.getElementById('error-msg-text').textContent = message;
+      errorEl.style.display = 'block';
+    }
+
+    async function initGateway() {
+      showLoading('Đang kết nối cổng thanh toán an toàn...');
+
+      if (!paymentId || !secureToken) {
+        showError('Thiếu thông tin phiên thanh toán (payment_id hoặc token). Vui lòng quay lại giỏ hàng và thử lại.');
+        return;
+      }
+
+      try {
+        const res = await fetchWithTimeout(`/api/store/payments/info/${paymentId}`);
+        const data = await res.json();
+        
+        if (!res.ok || !data.success) {
+          showError(data.message || 'Không tìm thấy thông tin đơn hàng hoặc phiên thanh toán đã kết thúc.');
+          return;
+        }
+
+        paymentData = data;
+        document.getElementById('loading-state').style.display = 'none';
+        document.getElementById('error-state').style.display = 'none';
+        document.getElementById('payment-content').style.display = 'block';
+
+        document.getElementById('disp-amount').textContent = data.payment.amount.toLocaleString('vi-VN') + ' ₫';
+        document.getElementById('disp-order-code').textContent = '#' + data.payment.order_code;
+        document.getElementById('disp-customer').textContent = data.order.customer_name;
+
+        // Generate VietQR
+        const bankAcc = '1234567890';
+        const bankHolder = 'SEN CHAM BOSS';
+        const qrUrl = `https://img.vietqr.io/image/vcb-${bankAcc}-compact2.png?amount=${data.payment.amount}&addInfo=${encodeURIComponent(data.payment.order_code)}&accountName=${encodeURIComponent(bankHolder)}`;
+        document.getElementById('vietqr-img').src = qrUrl;
+
+        startCountdown(15 * 60);
+      } catch (err) {
+        console.error('Init gateway error:', err);
+        showError('Không thể kết nối cổng thanh toán (Quá thời gian phản hồi hoặc lỗi mạng). Vui lòng thử lại.');
+      }
+    }
+
+    function switchPayTab(tabId, el) {
+      document.querySelectorAll('.pay-tab').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      
+      const tabEl = document.getElementById(tabId);
+      if (tabEl) tabEl.classList.add('active');
+      if (el) el.classList.add('active');
+    }
+
+    function selectBank(el, code) {
+      document.querySelectorAll('.bank-item').forEach(b => b.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedBankCode = code;
+    }
+
+    function startCountdown(seconds) {
+      if (timerInterval) clearInterval(timerInterval);
+      const timerEl = document.getElementById('countdown-timer');
+      let remain = seconds;
+      timerInterval = setInterval(() => {
+        remain--;
+        if (remain <= 0) {
+          clearInterval(timerInterval);
+          showResult(false, 'Phiên thanh toán đã hết hạn (15 phút). Vui lòng quay lại đơn hàng để thanh toán lại.');
+          return;
+        }
+        const m = Math.floor(remain / 60);
+        const s = remain % 60;
+        if (timerEl) timerEl.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+      }, 1000);
+    }
+
+    async function confirmPayment(status, method) {
+      if (timerInterval) clearInterval(timerInterval);
+      
+      showLoading('Đang xác minh giao dịch với Cổng thanh toán & Hệ thống...');
+
+      try {
+        const res = await fetchWithTimeout('/api/store/payments/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            payment_id: paymentId,
+            token: secureToken,
+            status: status,
+            bank_code: selectedBankCode || method,
+            transaction_ref: 'TXN-' + Date.now()
+          })
+        }, 10000);
+
+        const data = await res.json();
+
+        if (data.success) {
+          showResult(true, 'Thanh toán thành công! Đơn hàng của bạn đã được xác nhận và chuyển tới cửa hàng.');
+        } else {
+          showResult(false, data.message || 'Thanh toán không thành công hoặc đã bị hủy.');
+        }
+      } catch (err) {
+        console.error('Verify payment error:', err);
+        showResult(false, 'Lỗi kết nối khi xác minh giao dịch. Vui lòng kiểm tra lại trạng thái trong mục Đơn hàng.');
+      }
+    }
+
+    function showResult(isSuccess, message) {
+      document.getElementById('loading-state').style.display = 'none';
+      document.getElementById('error-state').style.display = 'none';
+      document.getElementById('payment-content').style.display = 'none';
+      
+      const screen = document.getElementById('result-screen');
+      screen.style.display = 'block';
+
+      screen.innerHTML = `
+        <div class="status-icon" style="color:${isSuccess ? 'var(--success)' : 'var(--danger)'};">
+          <i class="fa-solid ${isSuccess ? 'fa-circle-check' : 'fa-circle-xmark'}"></i>
+        </div>
+        <h2 style="font-size:21px; font-weight:800; margin-bottom:8px; color:${isSuccess ? 'var(--success)' : 'var(--danger)'};">
+          ${isSuccess ? 'Giao dịch thành công!' : 'Thanh toán chưa thành công'}
+        </h2>
+        <p style="color:var(--text-muted); font-size:14px; margin-bottom:24px; line-height:1.5;">${message}</p>
+        
+        <div style="display:flex; gap:10px; justify-content:center; flex-direction:column; max-width:340px; margin:0 auto;">
+          <button class="btn btn-primary" onclick="returnToApp()">
+            <i class="fa-solid fa-box"></i> Xem đơn hàng của tôi
+          </button>
+          ${!isSuccess ? `
+            <button class="btn btn-secondary" onclick="initGateway()">
+              <i class="fa-solid fa-rotate-right"></i> Thử thanh toán lại
+            </button>
+          ` : ''}
+        </div>
+      `;
+
+      if (isSuccess) {
+        setTimeout(returnToApp, 3500);
+      }
+    }
+
+    function returnToApp() {
+      window.location.href = '/#store-orders';
+    }
+
+    window.addEventListener('DOMContentLoaded', initGateway);
+  </script>
+</body>
+</html>

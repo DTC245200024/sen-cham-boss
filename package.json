@@ -1,0 +1,33 @@
+{
+  "name": "web-cham-soc-thu-cung",
+  "version": "1.0.0",
+  "description": "Hệ thống quản lý thú cưng và lịch chăm sóc thú cưng tích hợp AI",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "rag:clear-cache": "node -e \"require('fs').rmSync('data/rag_embeddings.json',{force:true})\"",
+    "setup:local-ai": "bash scripts/setup-local-ai.sh",
+    "rag:warm-local": "node scripts/warm-local-rag.js"
+  },
+  "keywords": [
+    "pet-care",
+    "pet-management",
+    "ai-pet-assistant"
+  ],
+  "author": "UDTTNT",
+  "license": "ISC",
+  "dependencies": {
+    "@google/genai": "^2.19.0",
+    "@google/generative-ai": "^0.24.1",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "localtunnel": "^2.0.2",
+    "multer": "^2.2.0"
+  }
+}

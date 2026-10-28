@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.3 Các định nghĩa, thuật ngữ, từ viết tắt - SRS Dự Án Sen Chăm Boss</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 13pt;
+            line-height: 1.5;
+            color: #000;
+            background-color: #f4f6f9;
+            padding: 30px 15px;
+            margin: 0;
+        }
+        .page-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px 45px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 4px;
+        }
+        .action-bar {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ccc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 14px;
+        }
+        .copy-btn {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s;
+        }
+        .copy-btn:hover {
+            background-color: #1d4ed8;
+        }
+        .copy-btn.copied {
+            background-color: #16a34a;
+        }
+        .section-title {
+            font-size: 14pt;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #000;
+            text-transform: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-size: 13pt;
+        }
+        th, td {
+            border: 1px solid #000000;
+            padding: 8px 12px;
+            vertical-align: top;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-align: center;
+        }
+        th:nth-child(1), td:nth-child(1) {
+            width: 22%;
+            font-weight: bold;
+        }
+        th:nth-child(2), td:nth-child(2) {
+            width: 48%;
+        }
+        th:nth-child(3), td:nth-child(3) {
+            width: 30%;
+        }
+        .copy-tip {
+            color: #555;
+            font-size: 13px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-container">
+        <div class="action-bar">
+            <span class="copy-tip"><i class="fa-solid fa-lightbulb"></i> Bạn có thể bôi đen chuột trực tiếp hoặc nhấn nút bên phải để sao chép vào Word.</span>
+            <button class="copy-btn" id="copyBtn" onclick="copyTable()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                </svg>
+                <span id="btnText">Sao chép bảng</span>
+            </button>
+        </div>
+
+        <div id="copyable-content">
+            <div class="section-title">1.3 Các định nghĩa, thuật ngữ, từ viết tắt</div>
+
+            <table id="termsTable">
+                <thead>
+                    <tr>
+                        <th>Thuật ngữ/Từ viết tắt</th>
+                        <th>Giải thích</th>
+                        <th>Ghi chú</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>SRS</td>
+                        <td>Tài liệu đặc tả yêu cầu phần mềm (Software Requirements Specification).</td>
+                        <td>Dùng làm cơ sở phân tích, thiết kế và phát triển hệ thống.</td>
+                    </tr>
+                    <tr>
+                        <td>AI</td>
+                        <td>Trí tuệ nhân tạo (Artificial Intelligence).</td>
+                        <td>Tích hợp mô hình AI để tư vấn sức khỏe dinh dưỡng và tự động sinh lịch chăm sóc.</td>
+                    </tr>
+                    <tr>
+                        <td>UC</td>
+                        <td>Use Case – Trường hợp sử dụng.</td>
+                        <td>Mô tả chi tiết tương tác giữa các tác nhân (User, Doctor, Admin) và hệ thống.</td>
+                    </tr>
+                    <tr>
+                        <td>User (Chủ nuôi)</td>
+                        <td>Người dùng sở hữu và nuôi dưỡng thú cưng.</td>
+                        <td>Sử dụng các chức năng quản lý thú cưng, đặt lịch khám, mua sắm và hỏi đáp AI.</td>
+                    </tr>
+                    <tr>
+                        <td>Doctor (Bác sĩ)</td>
+                        <td>Bác sĩ thú y trực tuyến trên hệ thống.</td>
+                        <td>Thực hiện tiếp nhận ca khám, khám lâm sàng, ghi nhận xét nghiệm, kê đơn thuốc và cập nhật y bạ.</td>
+                    </tr>
+                    <tr>
+                        <td>Admin (Quản trị viên)</td>
+                        <td>Người quản trị toàn bộ hệ thống.</td>
+                        <td>Quản lý người dùng, thú cưng hệ thống, sản phẩm, voucher, đơn hàng và thống kê doanh thu.</td>
+                    </tr>
+                    <tr>
+                        <td>Thú cưng (Boss)</td>
+                        <td>Động vật (chó, mèo,...) được người dùng nuôi dưỡng và theo dõi.</td>
+                        <td>Đối tượng quản lý trọng tâm của hệ thống (giống loài, ngày sinh, cân nặng, dị ứng, tiền sử bệnh).</td>
+                    </tr>
+                    <tr>
+                        <td>Hồ sơ sức khỏe (Y bạ điện tử)</td>
+                        <td>Hồ sơ y tế số hóa lưu trữ toàn bộ lịch sử khám bệnh và điều trị của thú cưng.</td>
+                        <td>Bao gồm lịch sử khám bệnh, biểu đồ biến thiên cân nặng, thuốc đang dùng, kết quả xét nghiệm.</td>
+                    </tr>
+                    <tr>
+                        <td>Lịch chăm sóc</td>
+                        <td>Lịch trình nhắc nhở các hoạt động chăm sóc định kỳ cho thú cưng.</td>
+                        <td>Bao gồm cho ăn hàng ngày, tắm rửa, cắt móng, tiêm phòng, tẩy giun và dùng thuốc.</td>
+                    </tr>
+                    <tr>
+                        <td>Trợ lý AI (AI Pet Vet)</td>
+                        <td>Mô-đun trợ lý ảo thông minh 24/7 hỗ trợ người dùng.</td>
+                        <td>Giải đáp thắc mắc về dinh dưỡng, hành vi, bệnh lý và tự động sinh bộ lịch chăm sóc chuẩn y khoa.</td>
+                    </tr>
+                    <tr>
+                        <td>Lịch khám (Đặt lịch khám)</td>
+                        <td>Chức năng hẹn giờ khám giữa chủ nuôi và bác sĩ thú y.</td>
+                        <td>Chủ nuôi chọn dịch vụ/bác sĩ/thời gian; bác sĩ xác nhận, điều chỉnh và tiến hành ca khám.</td>
+                    </tr>
+                    <tr>
+                        <td>Tiêm phòng (Vaccination)</td>
+                        <td>Hoạt động tiêm chủng vắc-xin định kỳ phòng ngừa bệnh cho thú cưng.</td>
+                        <td>Theo dõi loại vắc-xin, ngày tiêm và nhắc hẹn mũi tiêm nhắc lại.</td>
+                    </tr>
+                    <tr>
+                        <td>Tẩy giun (Deworming)</td>
+                        <td>Hoạt động uống thuốc tẩy giun sán hoặc nhỏ gáy định kỳ.</td>
+                        <td>Tự động tính chu kỳ và nhắc lịch thực hiện theo độ tuổi/cân nặng của thú cưng.</td>
+                    </tr>
+                    <tr>
+                        <td>Siêu thị Pet (Sản phẩm)</td>
+                        <td>Kênh mua sắm thức ăn, pate dinh dưỡng, cát vệ sinh và phụ kiện thú cưng.</td>
+                        <td>Hỗ trợ xem chi tiết, thêm vào giỏ hàng, áp dụng voucher và thanh toán qua mã QR.</td>
+                    </tr>
+                    <tr>
+                        <td>Đơn hàng & Doanh thu</td>
+                        <td>Phân hệ quản lý giao dịch mua hàng và báo cáo tài chính.</td>
+                        <td>Theo dõi trạng thái đơn hàng và thống kê biểu đồ doanh thu theo ngày, tháng, năm.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function copyTable() {
+            const el = document.getElementById('copyable-content');
+            const range = document.createRange();
+            range.selectNodeContents(el);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            
+            try {
+                document.execCommand('copy');
+                const btn = document.getElementById('copyBtn');
+                const btnText = document.getElementById('btnText');
+                btn.classList.add('copied');
+                btnText.textContent = 'Đã sao chép!';
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btnText.textContent = 'Sao chép bảng';
+                }, 2000);
+            } catch (err) {
+                alert('Vui lòng bôi đen bảng thủ công và nhấn Ctrl+C (Cmd+C) để sao chép.');
+            }
+        }
+    </script>
+</body>
+</html>
