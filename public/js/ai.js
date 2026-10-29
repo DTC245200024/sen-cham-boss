@@ -439,7 +439,7 @@ ${escHtml(prop.message)}
                 if (parts.length === 3) displayDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
               }
 
-              const displayType = s.source === 'appointment' ? 'Lịch Hẹn' : (s.source === 'vaccination' ? 'Lịch Tiêm' : 'Lịch Chăm Sóc');
+              const displayType = s.source === 'appointment' ? 'Lịch Hẹn' : (s.source === 'vaccination' ? 'Lịch Tiêm' : 'Nhắc Lịch AI');
 
               return `
                 <label style="display:flex; align-items:flex-start; gap:10px; padding:10px 12px; background:#FFF; border-radius:8px; margin-bottom:8px; border:1px solid var(--border); cursor:pointer;">
@@ -892,7 +892,7 @@ function renderAIChatResponse(contentDiv, fullText, messagesBox, schedules = nul
     actionBtnHtml = `
       <div style="margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap;">
         <button class="btn btn-primary" onclick="saveDirectChatSchedules(this)">
-          <i class="fa-solid fa-calendar-check"></i> Lưu ${schedules.length} Lịch Chăm Sóc Ngay
+          <i class="fa-solid fa-calendar-check"></i> Lưu ${schedules.length} Nhắc Lịch AI Ngay
         </button>
       </div>
     `;
@@ -997,8 +997,8 @@ window.saveDirectChatSchedules = async function(btn) {
   const res = await apiRequest('/ai/save-schedule', 'POST', { schedules: window._pendingChatSchedules });
   if (res && res.success) {
     btn.className = 'btn btn-secondary';
-    btn.innerHTML = '<i class="fa-solid fa-check"></i> Đã Lưu Vào Lịch Chăm Sóc!';
-    showToast(res.message || 'Lưu lịch chăm sóc thành công!', 'success');
+    btn.innerHTML = '<i class="fa-solid fa-check"></i> Đã Lưu Vào Nhắc Lịch AI!';
+    showToast(res.message || 'Lưu nhắc lịch AI thành công!', 'success');
     if (window.loadSchedulesList) window.loadSchedulesList();
     if (window.loadDashboardData) window.loadDashboardData();
     window._pendingChatSchedules = null;

@@ -178,9 +178,6 @@ router.get('/:id', (req, res) => {
 // POST /api/schedules - Create care schedule
 router.post('/', (req, res) => {
   try {
-    if (req.user.role === 'ADMIN') {
-      return res.status(403).json({ success: false, message: 'Quản trị viên (ADMIN) không trực tiếp tạo lịch chăm sóc nghiệp vụ của cửa hàng. Quyền này thuộc về Quản lý cửa hàng (STORE_MANAGER), Lễ tân và Chủ nuôi.' });
-    }
 
     const { pet_id, task_name, category, date, time, description, priority } = req.body;
 

@@ -169,9 +169,6 @@ router.get('/pet/:petId', (req, res) => {
 // POST /api/health - Add health record (Care Staff & Admin only)
 router.post('/', (req, res) => {
   try {
-    if (req.user.role === 'ADMIN') {
-      return res.status(403).json({ success: false, message: 'Quản trị viên (ADMIN) không trực tiếp ghi nhận hồ sơ chăm sóc nghiệp vụ của cửa hàng. Quyền này thuộc về Quản lý cửa hàng (STORE_MANAGER) và Nhân viên chăm sóc.' });
-    }
     if (req.user.role === 'USER') {
       return res.status(403).json({ success: false, message: 'Chủ nuôi không có quyền ghi nhận hồ sơ chăm sóc.' });
     }

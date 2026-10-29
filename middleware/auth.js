@@ -42,13 +42,13 @@ const authenticateToken = (req, res, next) => {
 };
 
 // Middleware verify Admin Role
-const isManagementRole = (role) => ['ADMIN', 'STORE_MANAGER'].includes(String(role || '').toUpperCase().trim());
-const isStoreManagerRole = (role) => String(role || '').toUpperCase().trim() === 'STORE_MANAGER';
+const isManagementRole = (role) => String(role || '').toUpperCase().trim() === 'ADMIN';
+const isStoreManagerRole = (role) => String(role || '').toUpperCase().trim() === 'ADMIN';
 
 const requireAdmin = (req, res, next) => {
   const userRole = (req.user && req.user.role) ? String(req.user.role).toUpperCase().trim() : '';
   if (userRole !== 'ADMIN') {
-    return res.status(403).json({ success: false, message: 'Truy cập bị từ chối. Tính năng này chỉ dành cho Quản lý.' });
+    return res.status(403).json({ success: false, message: 'Truy cập bị từ chối. Tính năng này chỉ dành cho Admin (Quản lý hệ thống).' });
   }
   next();
 };
@@ -57,7 +57,7 @@ const requireAdmin = (req, res, next) => {
 const requireStaff = (req, res, next) => {
   const userRole = (req.user && req.user.role) ? String(req.user.role).toUpperCase().trim() : '';
   if (userRole !== 'ADMIN' && userRole !== 'RECEPTIONIST') {
-    return res.status(403).json({ success: false, message: 'Truy cập bị từ chối. Tính năng này chỉ dành cho Lễ tân hoặc Quản lý.' });
+    return res.status(403).json({ success: false, message: 'Truy cập bị từ chối. Tính năng này chỉ dành cho Lễ tân hoặc Admin.' });
   }
   next();
 };

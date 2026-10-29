@@ -37,6 +37,10 @@ function resolveRouteToView(route) {
     'health-logs': 'health-logs',
     'admin-health-logs': 'health-logs',
     'admin-revenue': 'revenue',
+    'admin-accounts': 'admin-accounts',
+    'accounts': 'admin-accounts',
+    'admin-settings': 'admin-settings',
+    'settings': 'admin-settings',
     'messages': 'messages'
   };
   return routeMap[clean] || null;
@@ -79,13 +83,14 @@ function switchView(viewName, targetPetId, updateUrl = true) {
     if (!careAllowed.includes(viewName)) {
       viewName = 'appointments';
     }
-  } else if (userRole === 'STORE_MANAGER') {
-    const managerAllowed = ['admin-staff', 'admin-users', 'admin-pets', 'appointments', 'admin-care-assignments', 'admin-assignments', 'services', 'invoices', 'revenue', 'dashboard', 'profile', 'pets', 'schedules', 'health', 'health-logs', 'messages', 'ai-assistant'];
-    if (!managerAllowed.includes(viewName)) {
-      viewName = 'dashboard';
-    }
-  } else if (userRole === 'ADMIN') {
-    const adminAllowed = ['admin-staff', 'admin-users', 'admin-pets', 'health', 'schedules', 'appointments', 'admin-care-assignments', 'services', 'ai-assistant', 'admin-settings', 'profile'];
+  } else if (userRole === 'ADMIN' || userRole === 'STORE_MANAGER') {
+    // Admin (Quản lý hệ thống) có toàn quyền truy cập tất cả module quản trị và điều hành
+    const adminAllowed = [
+      'admin-staff', 'admin-users', 'admin-pets', 'health', 'health-logs',
+      'schedules', 'appointments', 'admin-care-assignments', 'admin-assignments',
+      'services', 'invoices', 'dashboard', 'revenue',
+      'admin-accounts', 'admin-settings', 'ai-assistant', 'messages', 'profile', 'pets'
+    ];
     if (!adminAllowed.includes(viewName)) {
       viewName = 'admin-staff';
     }
@@ -114,24 +119,25 @@ function switchView(viewName, targetPetId, updateUrl = true) {
 
   // Update Top Title
   const titleMap = {
-    dashboard: 'Tổng Quan Hệ Thống Sen Chăm Boss',
+    dashboard: 'Thống Kê / Báo Cáo Hệ Thống',
     pets: userRole === 'CARE_STAFF' ? 'Thông Tin Thú Cưng' : (userRole === 'ADMIN' ? 'Quản Lý Thông Tin Thú Cưng' : 'Quản Lý Thú Cưng'),
-    schedules: userRole === 'ADMIN' ? 'Quản Lý Lịch Chăm Sóc' : 'Lịch Chăm Sóc',
+    schedules: 'Nhắc Lịch AI',
     health: userRole === 'ADMIN' ? 'Quản Lý Hồ Sơ Sức Khỏe' : (userRole === 'CARE_STAFF' ? 'Ghi Nhận Hồ Sơ Chăm Sóc' : 'Hồ Sơ Sức Khỏe'),
     'health-logs': 'Quản Lý Ghi Nhận Hồ Sơ Chăm Sóc',
     'ai-assistant': 'Trợ lý AI',
-    'admin-settings': 'Quản Lý Hệ Thống & Cấu Hình Phân Quyền',
-    'profile': userRole === 'ADMIN' ? 'Hồ Sơ Cá Nhân (Quản Trị Viên)' : (userRole === 'STORE_MANAGER' ? 'Hồ Sơ Quản Lý Cửa Hàng' : (userRole === 'RECEPTIONIST' ? 'Hồ Sơ Lễ Tân' : 'Hồ Sơ Cá Nhân')),
+    'admin-settings': 'Cấu Hình Hệ Thống Sen Chăm Boss',
+    'admin-accounts': 'Tài Khoản & Phân Quyền Hệ Thống',
+    'profile': userRole === 'ADMIN' ? 'Hồ Sơ Admin (Quản Lý Hệ Thống)' : (userRole === 'RECEPTIONIST' ? 'Hồ Sơ Lễ Tân' : (userRole === 'CARE_STAFF' ? 'Hồ Sơ Nhân Viên Chăm Sóc' : 'Hồ Sơ Cá Nhân')),
     'appointments': userRole === 'CARE_STAFF' ? 'Lịch Chăm Sóc Phân Công' : (['ADMIN', 'STORE_MANAGER', 'RECEPTIONIST'].includes(userRole) ? 'Quản lý Đặt & Lịch Hẹn' : 'Đặt Lịch Chăm Sóc'),
-    'admin-care-assignments': 'Quản lý Lịch Chăm Sóc Phân Công',
-    'admin-assignments': 'Quản lý Lịch Chăm Sóc Phân Công',
-    'services': 'Dịch Vụ & Bảng Giá Gói Chăm Sóc',
-    'invoices': (userRole === 'RECEPTIONIST' || ['ADMIN','STORE_MANAGER'].includes(userRole)) ? 'Quản Lý Hóa Đơn & Thanh Toán' : 'Hóa Đơn',
+    'admin-care-assignments': 'Phân Công Lịch Chăm Sóc',
+    'admin-assignments': 'Phân Công Lịch Chăm Sóc',
+    'services': 'Dịch Vụ & Gói Chăm Sóc',
+    'invoices': 'Hóa Đơn & Thanh Toán',
     'revenue': 'Thống Kê / Báo Cáo Doanh Thu',
-    'admin-staff': 'Quản Lý Nhân Viên & Phân Quyền',
+    'admin-staff': 'Quản Lý Nhân Viên',
     'admin-users': 'Quản Lý Chủ Nuôi',
     'admin-pets': 'Quản Lý Thông Tin Thú Cưng',
-    'messages': 'Tin Nhắn & Hỗ Trực Tuyến'
+    'messages': 'Tin Nhắn & Hỗ Trợ Trực Tuyến'
   };
   const titleEl = document.getElementById('page-title');
   if (titleEl) titleEl.innerText = titleMap[viewName] || 'Sen Chăm Boss';
@@ -144,6 +150,10 @@ function switchView(viewName, targetPetId, updateUrl = true) {
   // Load View Data
   if (viewName === 'admin-staff' && window.loadAdminStaff) {
     window.loadAdminStaff();
+  } else if (viewName === 'admin-accounts' && window.loadAdminAccounts) {
+    window.loadAdminAccounts();
+  } else if (viewName === 'admin-settings' && window.loadAdminSettings) {
+    window.loadAdminSettings();
   } else if (viewName === 'dashboard' && window.loadDashboardData) {
     window.loadDashboardData();
   } else if (viewName === 'pets' && window.loadPetsList) {
@@ -756,7 +766,7 @@ async function loadLandingUserSchedules() {
         container.innerHTML = `
           <div style="text-align:center; padding:36px; background:#f8fafc; border-radius:16px; border:1px dashed var(--border); color:var(--text-muted);">
             <i class="fa-regular fa-calendar-check" style="font-size:32px; color:#cbd5e1; margin-bottom:10px; display:block;"></i>
-            <h4 style="margin:0 0 4px; font-weight:700; color:#1f2937;">Không có lịch chăm sóc sắp tới</h4>
+            <h4 style="margin:0 0 4px; font-weight:700; color:#1f2937;">Không có nhắc lịch AI sắp tới</h4>
             <p style="font-size:13px; margin:0 0 14px;">Bạn hiện không có lịch chăm sóc hay lịch hẹn nào đang chờ xử lý.</p>
             <button class="btn btn-primary btn-sm" onclick="window.navigateToFeature('appointments')">
               <i class="fa-solid fa-calendar-plus"></i> Đặt Lịch Chăm Sóc Ngay
@@ -870,7 +880,7 @@ function renderLandingGuestStates() {
     schContainer.innerHTML = `
       <div style="text-align:center; padding:36px; background:#f8fafc; border-radius:16px; border:1px dashed var(--border); color:var(--text-muted);">
         <i class="fa-regular fa-calendar-check" style="font-size:32px; color:var(--secondary); margin-bottom:10px; display:block;"></i>
-        <h4 style="margin:0 0 4px; font-weight:700; color:#1f2937;">Đăng nhập để theo dõi lịch chăm sóc</h4>
+        <h4 style="margin:0 0 4px; font-weight:700; color:#1f2937;">Đăng nhập để theo dõi nhắc lịch AI</h4>
         <p style="font-size:13px; margin:0 0 14px;">Xem lịch tiêm phòng, tẩy giun, tắm spa và nhận thông báo nhắc lịch tự động.</p>
         <button class="btn btn-primary btn-sm" onclick="openAuthModal('login')">
           <i class="fa-solid fa-right-to-bracket"></i> Đăng nhập ngay

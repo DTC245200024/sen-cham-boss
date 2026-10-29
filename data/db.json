@@ -70,13 +70,13 @@
       "full_name": "chủ tiệm",
       "email": "chutiem@petcare.com",
       "password_hash": "$2a$10$gLtyFziBr89NTEQecfLuHeJbPqSJ9LiXNEmJLrZog8E1LY9W64g3W",
-      "role": "STORE_MANAGER",
-      "status": "ACTIVE",
+      "role": "ADMIN",
+      "status": "LOCKED",
       "phone": "0987654324",
       "address": "Hà Nội",
       "avatar": "https://api.dicebear.com/7.x/bottts/svg?seed=QuanLyCuaHang",
       "created_at": "2026-09-22T06:00:00.000Z",
-      "updated_at": "2026-10-28T14:01:14.540Z"
+      "updated_at": "2026-10-29T17:52:52.056Z"
     }
   ],
   "pets": [
@@ -775,12 +775,123 @@
       "created_at": "2026-10-28T18:25:19.210Z",
       "updated_at": "2026-10-28T18:25:19.210Z",
       "id": "pet_1793211919220_7f29"
+    },
+    {
+      "pet_id": "pet_1788798725935_chtp",
+      "appointment_id": "app_1793297748077_mt3a",
+      "staff_id": "use_1788690356107_rqnb",
+      "staff_name": "Nhân Viên Chăm Sóc",
+      "record_date": "2026-10-30",
+      "record_type": "CHĂM_SÓC",
+      "title": "Hồ sơ chăm sóc: Tẩy Giun Định Kỳ",
+      "description": "Lịch chăm sóc đã được nhân viên Nhân Viên Chăm Sóc xác nhận nhận lịch.",
+      "care_content": "Tẩy Giun Định Kỳ",
+      "status": "COMPLETED",
+      "condition_before": "Đặt dịch vụ: Tẩy Giun Định Kỳ",
+      "condition_after": "gầy",
+      "notes": "gầy",
+      "doctor_name": "Nhân Viên Chăm Sóc",
+      "created_at": "2026-10-29T18:16:37.504Z",
+      "updated_at": "2026-10-29T18:16:59.811Z",
+      "id": "pet_1793297797522_amix",
+      "completed_at": "2026-10-29T18:16:59.799Z"
+    },
+    {
+      "pet_id": "pet_1788798725935_chtp",
+      "appointment_id": "app_1793297891862_drw3",
+      "staff_id": "use_1788690356107_rqnb",
+      "staff_name": "Nhân Viên Chăm Sóc",
+      "record_date": "2026-10-30",
+      "record_type": "CHĂM_SÓC",
+      "title": "Hồ sơ chăm sóc: Tẩy Giun Định Kỳ",
+      "description": "Lịch chăm sóc đã được nhân viên Nhân Viên Chăm Sóc xác nhận nhận lịch.",
+      "care_content": "Tẩy Giun Định Kỳ",
+      "status": "COMPLETED",
+      "condition_before": "Đặt dịch vụ: Tẩy Giun Định Kỳ",
+      "condition_after": "",
+      "notes": "",
+      "doctor_name": "Nhân Viên Chăm Sóc",
+      "created_at": "2026-10-29T19:59:07.690Z",
+      "updated_at": "2026-10-29T19:59:11.352Z",
+      "id": "pet_1793303947746_46w3",
+      "completed_at": "2026-10-29T19:59:11.278Z"
     }
   ],
   "vaccinations": [],
   "medications": [],
   "dewormings": [],
   "care_schedules": [
+    {
+      "id": "sch_app_app_1793297891862_drw3",
+      "appointment_id": "app_1793297891862_drw3",
+      "pet_id": "pet_1788798725935_chtp",
+      "user_id": "use_1786177950113_exl4",
+      "created_by": "use_1786177950113_exl4",
+      "creator_role": "USER",
+      "task_name": "Tẩy Giun Định Kỳ",
+      "category": "LỊCH_HẸN",
+      "date": "2026-10-30",
+      "time": "09:00",
+      "description": "Lịch hẹn dịch vụ Tẩy Giun Định Kỳ cho bé ngan (Mã lịch: #862_drw3).",
+      "priority": "Bình thường",
+      "status": "ĐÃ_HOÀN_THÀNH",
+      "payment_method": "TIEN_MAT_DA_THU",
+      "payment_status": "DA_THANH_TOAN",
+      "is_ai": false,
+      "created_at": "2026-10-29T18:18:11.862Z",
+      "staff_id": "use_1788690356107_rqnb",
+      "staff_name": "Nhân Viên Chăm Sóc",
+      "assigned_to": "use_1788690356107_rqnb",
+      "updated_at": "2026-10-29T19:59:11.362Z",
+      "paymentStatus": "DA_THANH_TOAN",
+      "execution_note": "Đã hoàn thành dịch vụ"
+    },
+    {
+      "id": "sch_app_app_1793297748077_mt3a",
+      "appointment_id": "app_1793297748077_mt3a",
+      "pet_id": "pet_1788798725935_chtp",
+      "user_id": "use_1786177950113_exl4",
+      "created_by": "use_1786177950113_exl4",
+      "creator_role": "USER",
+      "task_name": "Tẩy Giun Định Kỳ",
+      "category": "LỊCH_HẸN",
+      "date": "2026-10-30",
+      "time": "09:00",
+      "description": "Lịch hẹn dịch vụ Tẩy Giun Định Kỳ cho bé ngan (Mã lịch: #077_mt3a).",
+      "priority": "Bình thường",
+      "status": "ĐÃ_HOÀN_THÀNH",
+      "payment_method": "CHUYEN_KHOAN_DA_NHAN",
+      "payment_status": "DA_THANH_TOAN",
+      "is_ai": false,
+      "created_at": "2026-10-29T18:15:48.077Z",
+      "paymentStatus": "DA_THANH_TOAN",
+      "updated_at": "2026-10-29T18:16:59.818Z",
+      "staff_id": "use_1788690356107_rqnb",
+      "staff_name": "Nhân Viên Chăm Sóc",
+      "assigned_to": "use_1788690356107_rqnb",
+      "execution_note": "gầy"
+    },
+    {
+      "id": "sch_app_app_1793279703064_8eqr",
+      "appointment_id": "app_1793279703064_8eqr",
+      "pet_id": "pet_1788798725935_chtp",
+      "user_id": "use_1786177950113_exl4",
+      "created_by": "use_1786177950113_exl4",
+      "creator_role": "USER",
+      "task_name": "Cắt Tỉa Lông & Tạo Kiểu (Grooming)",
+      "category": "LỊCH_HẸN",
+      "date": "2026-10-30",
+      "time": "10:00",
+      "description": "Lịch hẹn dịch vụ Cắt Tỉa Lông & Tạo Kiểu (Grooming) cho bé ngan (Mã lịch: #064_8eqr).",
+      "priority": "Bình thường",
+      "status": "ĐÃ_HỦY",
+      "payment_method": "TIEN_MAT",
+      "payment_status": "CHO_XAC_NHAN",
+      "is_ai": false,
+      "created_at": "2026-10-29T13:15:03.064Z",
+      "updated_at": "2026-10-29T13:15:52.742Z",
+      "notes": "Lịch chăm sóc đã bị hủy (Chủ nuôi hủy lịch)."
+    },
     {
       "id": "sch_app_app_1793211839971_rjll",
       "appointment_id": "app_1793211839971_rjll",
@@ -909,7 +1020,7 @@
       "is_ai": false,
       "created_at": "2026-10-28T17:54:49.078Z",
       "notes": "Lịch chăm sóc đã bị hủy (Chủ nuôi hủy lịch).",
-      "updated_at": "2026-10-28T17:54:55.943Z"
+      "updated_at": "2026-10-29T16:59:30.591Z"
     },
     {
       "id": "sch_app_app_1793209489859_cen1",
@@ -1104,7 +1215,7 @@
       "payment_status": "DA_THANH_TOAN",
       "is_ai": false,
       "created_at": "2026-10-28T17:21:53.523Z",
-      "updated_at": "2026-10-28T17:28:51.571Z",
+      "updated_at": "2026-10-29T16:59:30.611Z",
       "notes": "Lịch chăm sóc đã bị hủy (Lễ tân / Quản lý hủy lịch)."
     },
     {
@@ -4663,9 +4774,10 @@
       "message": "Nhân viên Nhân Viên Chăm Sóc đã xác nhận nhận lịch \"Gói Spa Thư Giãn 4 Lần (Thẻ Tháng)\" cho bé ngỗng (09:00 2026-10-09).",
       "type": "APPOINTMENT",
       "reference_id": "app_1791454828825_r8tg",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1791454919613_i3lz",
-      "created_at": "2026-10-08T10:21:59.613Z"
+      "created_at": "2026-10-08T10:21:59.613Z",
+      "updated_at": "2026-10-29T17:49:07.936Z"
     },
     {
       "user_id": "usr_receptionist_default",
@@ -4796,9 +4908,10 @@
       "message": "Khách hàng vịt đã hủy lịch \"Grooming Cắt Tỉa Lông Tạo Kiểu\" cho bé ngan (15:30 ngày 2026-11-20). Lý do: Bận đột xuất",
       "type": "APPOINTMENT",
       "reference_id": "app_1793195078941_ffl2",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793195079036_0jrk",
-      "created_at": "2026-10-28T13:44:39.036Z"
+      "created_at": "2026-10-28T13:44:39.036Z",
+      "updated_at": "2026-10-29T17:49:07.943Z"
     },
     {
       "user_id": "usr_receptionist_default",
@@ -4839,9 +4952,10 @@
       "message": "Khách hàng sữa đã hủy lịch \"Khám Sức Khỏe Tổng Quát\" cho bé sữa (09:00 ngày 2026-11-25). Lý do: Dọn dẹp kiểm thử",
       "type": "APPOINTMENT",
       "reference_id": "app_1793195079103_yffk",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793195079129_3yey",
-      "created_at": "2026-10-28T13:44:39.129Z"
+      "created_at": "2026-10-28T13:44:39.129Z",
+      "updated_at": "2026-10-29T17:49:07.947Z"
     },
     {
       "user_id": "usr_receptionist_default",
@@ -4928,9 +5042,10 @@
       "message": "Nhân viên Nhân Viên Chăm Sóc đã xác nhận nhận lịch \"Tắm & Spa Thư Giãn\" cho bé ngan (09:00 2026-10-29).",
       "type": "APPOINTMENT",
       "reference_id": "app_1793195332350_cbi5",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793196593074_5sng",
-      "created_at": "2026-10-28T14:09:53.074Z"
+      "created_at": "2026-10-28T14:09:53.074Z",
+      "updated_at": "2026-10-29T17:49:07.952Z"
     },
     {
       "user_id": "usr_receptionist_default",
@@ -4996,9 +5111,10 @@
       "message": "Khách hàng vịt đã hủy lịch \"Khám Sức Khỏe Tổng Quát\" cho bé ngan (12:15 ngày 2026-11-26). Lý do: Kiểm thử hoàn tất việc hủy lịch",
       "type": "APPOINTMENT",
       "reference_id": "app_1793198050612_o4nc",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793198050662_v2ei",
-      "created_at": "2026-10-28T14:34:10.662Z"
+      "created_at": "2026-10-28T14:34:10.662Z",
+      "updated_at": "2026-10-29T17:49:07.956Z"
     },
     {
       "user_id": "usr_receptionist_default",
@@ -5028,9 +5144,10 @@
       "message": "Khách hàng vịt đã hủy lịch \"Khám Sức Khỏe Tổng Quát\" cho bé ngan (14:30 ngày 2026-11-15). Lý do: Dọn dẹp kiểm thử",
       "type": "APPOINTMENT",
       "reference_id": "app_1793197999447_wh4e",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793198056478_7cmg",
-      "created_at": "2026-10-28T14:34:16.478Z"
+      "created_at": "2026-10-28T14:34:16.478Z",
+      "updated_at": "2026-10-29T17:49:07.959Z"
     },
     {
       "user_id": "usr_receptionist_default",
@@ -5072,9 +5189,10 @@
       "message": "Khách hàng vịt đã hủy lịch \"Khám Sức Khỏe Tổng Quát\" cho bé ngan (11:45 ngày 2026-11-18). Lý do: Kiểm thử hoàn tất việc hủy lịch",
       "type": "APPOINTMENT",
       "reference_id": "app_1793198061697_rzii",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793198061745_upve",
-      "created_at": "2026-10-28T14:34:21.745Z"
+      "created_at": "2026-10-28T14:34:21.745Z",
+      "updated_at": "2026-10-29T17:49:07.963Z"
     },
     {
       "user_id": "usr_receptionist_default",
@@ -5104,9 +5222,10 @@
       "message": "Khách hàng vịt đã hủy lịch \"Tắm & Spa Thư Giãn\" cho bé ngan (09:00 ngày 2026-10-30). Lý do: Chủ nuôi hủy lịch",
       "type": "APPOINTMENT",
       "reference_id": "app_1793196713508_hpyj",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793198247809_a0dh",
-      "created_at": "2026-10-28T14:37:27.809Z"
+      "created_at": "2026-10-28T14:37:27.809Z",
+      "updated_at": "2026-10-29T17:49:07.967Z"
     },
     {
       "user_id": "usr_receptionist_default",
@@ -5158,9 +5277,10 @@
       "message": "Khách hàng vịt đã hủy lịch \"Khám Sức Khỏe Tổng Quát\" cho bé ngan (13:45 ngày 2026-11-24). Lý do: Kiểm thử hoàn tất việc hủy lịch",
       "type": "APPOINTMENT",
       "reference_id": "app_1793199126156_ve02",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793199126203_mn8n",
-      "created_at": "2026-10-28T14:52:06.203Z"
+      "created_at": "2026-10-28T14:52:06.203Z",
+      "updated_at": "2026-10-29T17:49:07.971Z"
     },
     {
       "user_id": "usr_receptionist_default",
@@ -5190,9 +5310,10 @@
       "message": "Khách hàng vịt đã hủy lịch \"Tắm & Spa Thư Giãn\" cho bé ngan (09:00 ngày 2026-10-30). Lý do: Chủ nuôi hủy lịch",
       "type": "APPOINTMENT",
       "reference_id": "app_1793196713508_hpyj",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793199496428_dfnm",
-      "created_at": "2026-10-28T14:58:16.428Z"
+      "created_at": "2026-10-28T14:58:16.428Z",
+      "updated_at": "2026-10-29T17:49:07.974Z"
     },
     {
       "user_id": "usr_receptionist_default",
@@ -5268,9 +5389,10 @@
       "message": "Nhân viên Nhân Viên Chăm Sóc đã xác nhận nhận lịch \"Tiêm Phòng Vắc-xin Định Kỳ\" cho bé ngan (09:00 2026-10-29).",
       "type": "APPOINTMENT",
       "reference_id": "app_1793199504635_66ak",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793199545019_fs4c",
-      "created_at": "2026-10-28T14:59:05.019Z"
+      "created_at": "2026-10-28T14:59:05.019Z",
+      "updated_at": "2026-10-29T17:49:07.978Z"
     },
     {
       "user_id": "usr_receptionist_default",
@@ -5358,9 +5480,10 @@
       "message": "Khách hàng vịt đã hủy lịch \"Tắm & Spa Thư Giãn\" cho bé ngan (14:00 ngày 2026-11-02). Lý do: Chủ nuôi hủy lịch",
       "type": "APPOINTMENT",
       "reference_id": "app_1793205874843_4vqs",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793206152108_5we1",
-      "created_at": "2026-10-28T16:49:12.108Z"
+      "created_at": "2026-10-28T16:49:12.108Z",
+      "updated_at": "2026-10-29T17:49:07.982Z"
     },
     {
       "user_id": "usr_receptionist_default",
@@ -5438,9 +5561,10 @@
       "message": "Khách hàng vịt đã hủy lịch \"Cắt Tỉa Lông & Tạo Kiểu (Grooming)\" cho bé ngan (14:00 ngày 2026-10-30). Lý do: Chủ nuôi bận đột xuất",
       "type": "APPOINTMENT",
       "reference_id": "app_1793208113555_a4pr",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793208113668_vxpa",
-      "created_at": "2026-10-28T17:21:53.668Z"
+      "created_at": "2026-10-28T17:21:53.668Z",
+      "updated_at": "2026-10-29T17:49:07.986Z"
     },
     {
       "user_id": "usr_receptionist_default",
@@ -5518,9 +5642,10 @@
       "message": "Khách hàng vịt đã hủy lịch \"Cắt Tỉa Lông & Tạo Kiểu (Grooming)\" cho bé ngan (17:45 ngày 2026-11-10). Lý do: Chủ nuôi bận đột xuất",
       "type": "APPOINTMENT",
       "reference_id": "app_1793208330688_xnlv",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793208330800_a1z1",
-      "created_at": "2026-10-28T17:25:30.800Z"
+      "created_at": "2026-10-28T17:25:30.800Z",
+      "updated_at": "2026-10-29T17:49:07.989Z"
     },
     {
       "user_id": "usr_receptionist_default",
@@ -5642,9 +5767,10 @@
       "message": "Nhân viên Nhân Viên Chăm Sóc đã xác nhận nhận lịch \"Cắt Tỉa Lông & Tạo Kiểu (Grooming)\" cho bé ngan (09:00 2026-10-29).",
       "type": "APPOINTMENT",
       "reference_id": "app_1793208596576_ragd",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793208652151_uqi5",
-      "created_at": "2026-10-28T17:30:52.151Z"
+      "created_at": "2026-10-28T17:30:52.151Z",
+      "updated_at": "2026-10-29T17:49:07.992Z"
     },
     {
       "user_id": "usr_receptionist_default",
@@ -5810,9 +5936,10 @@
       "message": "Khách hàng vịt đã hủy lịch \"Cắt Tỉa Lông & Tạo Kiểu (Grooming)\" cho bé ngan (17:45 ngày 2026-11-09). Lý do: Chủ nuôi bận đột xuất",
       "type": "APPOINTMENT",
       "reference_id": "app_1793209489859_cen1",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793209489939_2kk4",
-      "created_at": "2026-10-28T17:44:49.939Z"
+      "created_at": "2026-10-28T17:44:49.939Z",
+      "updated_at": "2026-10-29T17:49:07.995Z"
     },
     {
       "user_id": "usr_receptionist_default",
@@ -5854,9 +5981,10 @@
       "message": "Khách hàng vịt đã hủy lịch \"Tẩy Giun Định Kỳ\" cho bé ngan (09:00 ngày 2026-10-29). Lý do: Chủ nuôi hủy lịch",
       "type": "APPOINTMENT",
       "reference_id": "app_1793210089078_9d0r",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793210095949_llmx",
-      "created_at": "2026-10-28T17:54:55.949Z"
+      "created_at": "2026-10-28T17:54:55.949Z",
+      "updated_at": "2026-10-29T17:49:07.998Z"
     },
     {
       "user_id": "usr_receptionist_default",
@@ -5945,9 +6073,10 @@
       "message": "Nhân viên Nhân Viên Chăm Sóc đã xác nhận nhận lịch \"Tẩy Giun Định Kỳ\" cho bé ngỗng (09:00 2026-10-29).",
       "type": "APPOINTMENT",
       "reference_id": "app_1793210108815_j5io",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793210174082_uc84",
-      "created_at": "2026-10-28T17:56:14.082Z"
+      "created_at": "2026-10-28T17:56:14.082Z",
+      "updated_at": "2026-10-29T17:49:08.001Z"
     },
     {
       "user_id": "usr_receptionist_default",
@@ -6035,9 +6164,10 @@
       "message": "Khách hàng vịt đã hủy lịch \"Cắt Tỉa Lông & Tạo Kiểu (Grooming)\" cho bé ngan (16:45 ngày 2026-11-08). Lý do: Chủ nuôi bận đột xuất",
       "type": "APPOINTMENT",
       "reference_id": "app_1793210765113_kxe3",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793210765210_kogl",
-      "created_at": "2026-10-28T18:06:05.210Z"
+      "created_at": "2026-10-28T18:06:05.210Z",
+      "updated_at": "2026-10-29T17:49:08.004Z"
     },
     {
       "user_id": "usr_receptionist_default",
@@ -6045,9 +6175,10 @@
       "message": "Khách hàng vịt đã hủy lịch \"Cắt Tỉa Lông & Tạo Kiểu (Grooming)\" cho bé ngan (16:45 ngày 2026-11-08). Lý do: Chủ nuôi bận đột xuất",
       "type": "APPOINTMENT",
       "reference_id": "app_1793210765113_kxe3",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793210765214_jzav",
-      "created_at": "2026-10-28T18:06:05.214Z"
+      "created_at": "2026-10-28T18:06:05.214Z",
+      "updated_at": "2026-10-29T18:13:02.144Z"
     },
     {
       "user_id": "usr_manager001_default",
@@ -6078,9 +6209,10 @@
       "type": "APPOINTMENT_ASSIGNED",
       "reference_id": "app_1793210770499_4em7",
       "appointment_id": "app_1793210770499_4em7",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793210770554_9ogl",
-      "created_at": "2026-10-28T18:06:10.554Z"
+      "created_at": "2026-10-28T18:06:10.554Z",
+      "updated_at": "2026-10-29T18:17:03.011Z"
     },
     {
       "user_id": "use_1786177950113_exl4",
@@ -6121,9 +6253,10 @@
       "type": "APPOINTMENT_ASSIGNED",
       "reference_id": "app_1793211833826_lz8i",
       "appointment_id": "app_1793211833826_lz8i",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793211833981_iixs",
-      "created_at": "2026-10-28T18:23:53.981Z"
+      "created_at": "2026-10-28T18:23:53.981Z",
+      "updated_at": "2026-10-29T18:17:03.020Z"
     },
     {
       "user_id": "use_1786177950113_exl4",
@@ -6200,9 +6333,10 @@
       "message": "Khách hàng vịt đã hủy lịch \"Cắt Tỉa Lông & Tạo Kiểu (Grooming)\" cho bé ngan (17:45 ngày 2026-11-10). Lý do: Chủ nuôi bận đột xuất",
       "type": "APPOINTMENT",
       "reference_id": "app_1793211839971_rjll",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793211840050_d82x",
-      "created_at": "2026-10-28T18:24:00.050Z"
+      "created_at": "2026-10-28T18:24:00.050Z",
+      "updated_at": "2026-10-29T17:49:08.006Z"
     },
     {
       "user_id": "usr_receptionist_default",
@@ -6210,9 +6344,10 @@
       "message": "Khách hàng vịt đã hủy lịch \"Cắt Tỉa Lông & Tạo Kiểu (Grooming)\" cho bé ngan (17:45 ngày 2026-11-10). Lý do: Chủ nuôi bận đột xuất",
       "type": "APPOINTMENT",
       "reference_id": "app_1793211839971_rjll",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793211840053_nzts",
-      "created_at": "2026-10-28T18:24:00.053Z"
+      "created_at": "2026-10-28T18:24:00.053Z",
+      "updated_at": "2026-10-29T18:13:02.153Z"
     },
     {
       "user_id": "usr_manager001_default",
@@ -6220,9 +6355,306 @@
       "message": "Khách hàng vịt đã hủy lịch \"Cắt Tỉa Lông & Tạo Kiểu (Grooming)\" cho bé ngan (17:45 ngày 2026-11-10). Lý do: Chủ nuôi bận đột xuất",
       "type": "APPOINTMENT",
       "reference_id": "app_1793211839971_rjll",
-      "is_read": false,
+      "is_read": true,
       "id": "not_1793211840056_l1rq",
-      "created_at": "2026-10-28T18:24:00.056Z"
+      "created_at": "2026-10-28T18:24:00.056Z",
+      "updated_at": "2026-10-29T17:14:47.516Z"
+    },
+    {
+      "id": "notif_179327849887903dog1d",
+      "user_id": "use_1786177950113_exl4",
+      "type": "OVERDUE",
+      "reference_id": "sch_app_app_1793210089078_9d0r",
+      "title": "Lịch quá hạn: Tẩy Giun Định Kỳ",
+      "message": "Công việc \"Tẩy Giun Định Kỳ\" cho bé ngan đã quá hạn vào lúc 09:00 2026-10-29.",
+      "is_read": true,
+      "created_at": "2026-10-29T12:54:58.880Z",
+      "updated_at": "2026-10-29T12:55:04.447Z"
+    },
+    {
+      "id": "notif_1793278498916p6tg556",
+      "user_id": "use_1786177950113_exl4",
+      "type": "OVERDUE",
+      "reference_id": "sch_app_app_1793208113523_9llo",
+      "title": "Lịch quá hạn: Tắm & Spa Thư Giãn",
+      "message": "Công việc \"Tắm & Spa Thư Giãn\" cho bé ngan đã quá hạn vào lúc 10:00 2026-10-29.",
+      "is_read": true,
+      "created_at": "2026-10-29T12:54:58.916Z",
+      "updated_at": "2026-10-29T12:55:04.452Z"
+    },
+    {
+      "user_id": "use_1786177950113_exl4",
+      "title": "<i class=\"fa-solid fa-calendar\"></i> Đặt lịch chăm sóc thành công",
+      "message": "Bạn đã đặt lịch \"Cắt Tỉa Lông & Tạo Kiểu (Grooming)\" cho bé ngan lúc 09:00 ngày 2026-10-30. Trạng thái thanh toán: \"Chờ xác nhận\".",
+      "type": "APPOINTMENT",
+      "reference_id": "app_1793279703064_8eqr",
+      "appointment_id": "app_1793279703064_8eqr",
+      "is_read": true,
+      "id": "not_1793279703083_0i73",
+      "created_at": "2026-10-29T13:15:03.083Z",
+      "updated_at": "2026-10-29T13:15:11.637Z"
+    },
+    {
+      "user_id": "use_1786177950113_exl4",
+      "title": "<i class=\"fa-solid fa-rotate-right\"></i> Lịch hẹn đã được đổi thời gian",
+      "message": "Lịch hẹn cho bé ngan đã được cập nhật sang 10:00 ngày 2026-10-30 (Dịch vụ: Cắt Tỉa Lông & Tạo Kiểu (Grooming)).",
+      "type": "APPOINTMENT",
+      "is_read": true,
+      "id": "not_1793279744399_vr27",
+      "created_at": "2026-10-29T13:15:44.399Z",
+      "updated_at": "2026-10-29T13:15:48.058Z"
+    },
+    {
+      "user_id": "usr_admin001_default",
+      "title": "<i class=\"fa-solid fa-xmark\"></i> Chủ nuôi đã hủy lịch hẹn",
+      "message": "Khách hàng vịt đã hủy lịch \"Cắt Tỉa Lông & Tạo Kiểu (Grooming)\" cho bé ngan (10:00 ngày 2026-10-30). Lý do: Chủ nuôi hủy lịch",
+      "type": "APPOINTMENT",
+      "reference_id": "app_1793279703064_8eqr",
+      "is_read": true,
+      "id": "not_1793279752747_dkww",
+      "created_at": "2026-10-29T13:15:52.747Z",
+      "updated_at": "2026-10-29T17:49:08.009Z"
+    },
+    {
+      "user_id": "usr_receptionist_default",
+      "title": "<i class=\"fa-solid fa-xmark\"></i> Chủ nuôi đã hủy lịch hẹn",
+      "message": "Khách hàng vịt đã hủy lịch \"Cắt Tỉa Lông & Tạo Kiểu (Grooming)\" cho bé ngan (10:00 ngày 2026-10-30). Lý do: Chủ nuôi hủy lịch",
+      "type": "APPOINTMENT",
+      "reference_id": "app_1793279703064_8eqr",
+      "is_read": true,
+      "id": "not_1793279752750_uwdn",
+      "created_at": "2026-10-29T13:15:52.750Z",
+      "updated_at": "2026-10-29T18:13:02.158Z"
+    },
+    {
+      "user_id": "usr_manager001_default",
+      "title": "<i class=\"fa-solid fa-xmark\"></i> Chủ nuôi đã hủy lịch hẹn",
+      "message": "Khách hàng vịt đã hủy lịch \"Cắt Tỉa Lông & Tạo Kiểu (Grooming)\" cho bé ngan (10:00 ngày 2026-10-30). Lý do: Chủ nuôi hủy lịch",
+      "type": "APPOINTMENT",
+      "reference_id": "app_1793279703064_8eqr",
+      "is_read": true,
+      "id": "not_1793279752754_3lgj",
+      "created_at": "2026-10-29T13:15:52.754Z",
+      "updated_at": "2026-10-29T17:14:47.525Z"
+    },
+    {
+      "id": "notif_1793293230619tzfx71l",
+      "user_id": "use_1786177950113_exl4",
+      "type": "UPCOMING",
+      "reference_id": "sch_app_app_1793210089078_9d0r",
+      "title": "Lịch sắp đến: Tẩy Giun Định Kỳ",
+      "message": "Đừng quên công việc \"Tẩy Giun Định Kỳ\" cho bé ngan vào lúc 09:00 hôm nay.",
+      "is_read": true,
+      "created_at": "2026-10-29T17:00:30.620Z",
+      "updated_at": "2026-10-29T18:15:18.706Z"
+    },
+    {
+      "id": "notif_179329323063459rxano",
+      "user_id": "use_1786177950113_exl4",
+      "type": "UPCOMING",
+      "reference_id": "sch_app_app_1793208113523_9llo",
+      "title": "Lịch sắp đến: Tắm & Spa Thư Giãn",
+      "message": "Đừng quên công việc \"Tắm & Spa Thư Giãn\" cho bé ngan vào lúc 10:00 hôm nay.",
+      "is_read": true,
+      "created_at": "2026-10-29T17:00:30.634Z",
+      "updated_at": "2026-10-29T18:15:18.712Z"
+    },
+    {
+      "user_id": "use_1786177950113_exl4",
+      "title": "<i class=\"fa-solid fa-calendar\"></i> Đặt lịch chăm sóc thành công",
+      "message": "Bạn đã đặt lịch \"Tẩy Giun Định Kỳ\" cho bé ngan lúc 09:00 ngày 2026-10-30. Trạng thái thanh toán: \"Chờ xác nhận\".",
+      "type": "APPOINTMENT",
+      "reference_id": "app_1793297748077_mt3a",
+      "appointment_id": "app_1793297748077_mt3a",
+      "is_read": true,
+      "id": "not_1793297748093_lkf3",
+      "created_at": "2026-10-29T18:15:48.093Z",
+      "updated_at": "2026-10-29T18:17:16.081Z"
+    },
+    {
+      "user_id": "use_1786177950113_exl4",
+      "title": "<i class=\"fa-solid fa-receipt\"></i> Xác nhận thanh toán thành công",
+      "message": "Lễ tân (Lễ Tân Hệ Thống) đã xác nhận thanh toán thành công cho lịch \"Tẩy Giun Định Kỳ\" của bé ngan. Phương thức: Chuyển khoản ngân hàng. Số tiền: 50.000 VNĐ.",
+      "type": "PAYMENT_CONFIRMED",
+      "reference_id": "app_1793297748077_mt3a",
+      "appointment_id": "app_1793297748077_mt3a",
+      "invoice_id": "inv_1793297772243_8xeu",
+      "is_read": true,
+      "id": "not_1793297772318_gun2",
+      "created_at": "2026-10-29T18:16:12.318Z",
+      "updated_at": "2026-10-29T18:17:19.608Z"
+    },
+    {
+      "user_id": "use_1786177950113_exl4",
+      "title": "<i class=\"fa-solid fa-check\"></i> Lễ tân đã xác nhận lịch hẹn",
+      "message": "Lịch hẹn \"Tẩy Giun Định Kỳ\" cho bé ngan (09:00 ngày 2026-10-30) đã được Lễ tân xác nhận tiếp nhận. Vui lòng đưa bé đến đúng giờ hẹn.",
+      "type": "APPOINTMENT",
+      "reference_id": "app_1793297748077_mt3a",
+      "is_read": true,
+      "id": "not_1793297772888_e0gx",
+      "created_at": "2026-10-29T18:16:12.888Z",
+      "updated_at": "2026-10-29T18:17:16.150Z"
+    },
+    {
+      "user_id": "use_1788690356107_rqnb",
+      "title": "<i class=\"fa-solid fa-calendar\"></i> Lịch chăm sóc được phân công",
+      "message": "Bạn có lịch chăm sóc mới được phân công\n• Thú cưng: ngan\n• Dịch vụ: Tẩy Giun Định Kỳ\n• Thời gian: 09:00 - 30/10/2026\n• Người phân công: Lễ Tân Hệ Thống",
+      "type": "APPOINTMENT_ASSIGNED",
+      "reference_id": "app_1793297748077_mt3a",
+      "appointment_id": "app_1793297748077_mt3a",
+      "is_read": true,
+      "id": "not_1793297781102_rlj3",
+      "created_at": "2026-10-29T18:16:21.102Z",
+      "status": "CONFIRMED",
+      "updated_at": "2026-10-29T18:16:37.516Z"
+    },
+    {
+      "user_id": "use_1786177950113_exl4",
+      "title": "<i class=\"fa-solid fa-check\"></i> Lịch hẹn đã được nhân viên xác nhận",
+      "message": "Nhân viên Nhân Viên Chăm Sóc đã xác nhận nhận lịch chăm sóc cho bé ngan.",
+      "type": "APPOINTMENT",
+      "is_read": true,
+      "id": "not_1793297797527_su7s",
+      "created_at": "2026-10-29T18:16:37.527Z",
+      "updated_at": "2026-10-29T18:17:16.165Z"
+    },
+    {
+      "user_id": "usr_admin001_default",
+      "title": "<i class=\"fa-solid fa-check\"></i> Nhân viên đã xác nhận nhận lịch",
+      "message": "Nhân viên Nhân Viên Chăm Sóc đã xác nhận nhận lịch \"Tẩy Giun Định Kỳ\" cho bé ngan (09:00 2026-10-30).",
+      "type": "APPOINTMENT",
+      "reference_id": "app_1793297748077_mt3a",
+      "is_read": true,
+      "id": "not_1793297797532_mdgx",
+      "created_at": "2026-10-29T18:16:37.532Z",
+      "updated_at": "2026-10-29T19:07:04.184Z"
+    },
+    {
+      "user_id": "usr_receptionist_default",
+      "title": "<i class=\"fa-solid fa-check\"></i> Nhân viên đã xác nhận nhận lịch",
+      "message": "Nhân viên Nhân Viên Chăm Sóc đã xác nhận nhận lịch \"Tẩy Giun Định Kỳ\" cho bé ngan (09:00 2026-10-30).",
+      "type": "APPOINTMENT",
+      "reference_id": "app_1793297748077_mt3a",
+      "is_read": true,
+      "id": "not_1793297797537_e6g6",
+      "created_at": "2026-10-29T18:16:37.537Z",
+      "updated_at": "2026-10-29T19:57:04.955Z"
+    },
+    {
+      "user_id": "usr_manager001_default",
+      "title": "<i class=\"fa-solid fa-check\"></i> Nhân viên đã xác nhận nhận lịch",
+      "message": "Nhân viên Nhân Viên Chăm Sóc đã xác nhận nhận lịch \"Tẩy Giun Định Kỳ\" cho bé ngan (09:00 2026-10-30).",
+      "type": "APPOINTMENT",
+      "reference_id": "app_1793297748077_mt3a",
+      "is_read": false,
+      "id": "not_1793297797541_ilhk",
+      "created_at": "2026-10-29T18:16:37.541Z"
+    },
+    {
+      "user_id": "use_1786177950113_exl4",
+      "title": "<i class=\"fa-solid fa-party-horn\"></i> Bé đã được chăm sóc xong",
+      "message": "Lịch chăm sóc \"Tẩy Giun Định Kỳ\" cho bé ngan đã hoàn thành. Bé đã được chăm sóc xong. Vui lòng đến đón thú cưng.",
+      "type": "APPOINTMENT",
+      "is_read": true,
+      "id": "not_1793297819829_9adw",
+      "created_at": "2026-10-29T18:16:59.829Z",
+      "updated_at": "2026-10-29T18:17:16.189Z"
+    },
+    {
+      "user_id": "use_1786177950113_exl4",
+      "title": "<i class=\"fa-solid fa-calendar\"></i> Đặt lịch chăm sóc thành công",
+      "message": "Bạn đã đặt lịch \"Tẩy Giun Định Kỳ\" cho bé ngan lúc 09:00 ngày 2026-10-30. Trạng thái thanh toán: \"Chờ xác nhận\".",
+      "type": "APPOINTMENT",
+      "reference_id": "app_1793297891862_drw3",
+      "appointment_id": "app_1793297891862_drw3",
+      "is_read": true,
+      "id": "not_1793297891880_f194",
+      "created_at": "2026-10-29T18:18:11.880Z",
+      "updated_at": "2026-10-29T18:18:19.587Z"
+    },
+    {
+      "user_id": "use_1786177950113_exl4",
+      "title": "<i class=\"fa-solid fa-check\"></i> Lễ tân đã xác nhận lịch hẹn",
+      "message": "Lịch hẹn \"Tẩy Giun Định Kỳ\" cho bé ngan (09:00 ngày 2026-10-30) đã được Lễ tân xác nhận tiếp nhận. Vui lòng đưa bé đến đúng giờ hẹn.",
+      "type": "APPOINTMENT",
+      "reference_id": "app_1793297891862_drw3",
+      "is_read": false,
+      "id": "not_1793303915990_mwn1",
+      "created_at": "2026-10-29T19:58:35.990Z"
+    },
+    {
+      "user_id": "use_1788690356107_rqnb",
+      "title": "<i class=\"fa-solid fa-calendar\"></i> Lịch chăm sóc được phân công",
+      "message": "Bạn có lịch chăm sóc mới được phân công\n• Thú cưng: ngan\n• Dịch vụ: Tẩy Giun Định Kỳ\n• Thời gian: 09:00 - 30/10/2026\n• Người phân công: Lễ Tân Hệ Thống",
+      "type": "APPOINTMENT_ASSIGNED",
+      "reference_id": "app_1793297891862_drw3",
+      "appointment_id": "app_1793297891862_drw3",
+      "is_read": true,
+      "id": "not_1793303919617_lrnh",
+      "created_at": "2026-10-29T19:58:39.617Z",
+      "status": "CONFIRMED",
+      "updated_at": "2026-10-29T19:59:07.736Z"
+    },
+    {
+      "user_id": "use_1786177950113_exl4",
+      "title": "<i class=\"fa-solid fa-receipt\"></i> Xác nhận thanh toán thành công",
+      "message": "Lễ tân (Lễ Tân Hệ Thống) đã xác nhận thanh toán thành công cho lịch \"Tẩy Giun Định Kỳ\" của bé ngan. Phương thức: Tiền mặt tại cửa hàng. Số tiền: 50.000 VNĐ.",
+      "type": "PAYMENT_CONFIRMED",
+      "reference_id": "app_1793297891862_drw3",
+      "appointment_id": "app_1793297891862_drw3",
+      "invoice_id": "inv_1793303922789_480o",
+      "is_read": false,
+      "id": "not_1793303922889_lzxg",
+      "created_at": "2026-10-29T19:58:42.889Z"
+    },
+    {
+      "user_id": "use_1786177950113_exl4",
+      "title": "<i class=\"fa-solid fa-check\"></i> Lịch hẹn đã được nhân viên xác nhận",
+      "message": "Nhân viên Nhân Viên Chăm Sóc đã xác nhận nhận lịch chăm sóc cho bé ngan.",
+      "type": "APPOINTMENT",
+      "is_read": false,
+      "id": "not_1793303947753_xbip",
+      "created_at": "2026-10-29T19:59:07.753Z"
+    },
+    {
+      "user_id": "usr_admin001_default",
+      "title": "<i class=\"fa-solid fa-check\"></i> Nhân viên đã xác nhận nhận lịch",
+      "message": "Nhân viên Nhân Viên Chăm Sóc đã xác nhận nhận lịch \"Tẩy Giun Định Kỳ\" cho bé ngan (09:00 2026-10-30).",
+      "type": "APPOINTMENT",
+      "reference_id": "app_1793297891862_drw3",
+      "is_read": true,
+      "id": "not_1793303947761_vfme",
+      "created_at": "2026-10-29T19:59:07.761Z",
+      "updated_at": "2026-10-29T19:59:24.015Z"
+    },
+    {
+      "user_id": "usr_receptionist_default",
+      "title": "<i class=\"fa-solid fa-check\"></i> Nhân viên đã xác nhận nhận lịch",
+      "message": "Nhân viên Nhân Viên Chăm Sóc đã xác nhận nhận lịch \"Tẩy Giun Định Kỳ\" cho bé ngan (09:00 2026-10-30).",
+      "type": "APPOINTMENT",
+      "reference_id": "app_1793297891862_drw3",
+      "is_read": false,
+      "id": "not_1793303947769_3ceo",
+      "created_at": "2026-10-29T19:59:07.769Z"
+    },
+    {
+      "user_id": "usr_manager001_default",
+      "title": "<i class=\"fa-solid fa-check\"></i> Nhân viên đã xác nhận nhận lịch",
+      "message": "Nhân viên Nhân Viên Chăm Sóc đã xác nhận nhận lịch \"Tẩy Giun Định Kỳ\" cho bé ngan (09:00 2026-10-30).",
+      "type": "APPOINTMENT",
+      "reference_id": "app_1793297891862_drw3",
+      "is_read": false,
+      "id": "not_1793303947778_giex",
+      "created_at": "2026-10-29T19:59:07.778Z"
+    },
+    {
+      "user_id": "use_1786177950113_exl4",
+      "title": "<i class=\"fa-solid fa-party-horn\"></i> Bé đã được chăm sóc xong",
+      "message": "Lịch chăm sóc \"Tẩy Giun Định Kỳ\" cho bé ngan đã hoàn thành. Bé đã được chăm sóc xong. Vui lòng đến đón thú cưng.",
+      "type": "APPOINTMENT",
+      "is_read": false,
+      "id": "not_1793303951389_sc47",
+      "created_at": "2026-10-29T19:59:11.389Z"
     }
   ],
   "care_schedule_history": [
@@ -6406,6 +6838,30 @@
       "execution_note": "",
       "id": "car_1793211919212_ndwc",
       "created_at": "2026-10-28T18:25:19.212Z"
+    },
+    {
+      "schedule_id": "sch_app_app_1793297748077_mt3a",
+      "appointment_id": "app_1793297748077_mt3a",
+      "pet_id": "pet_1788798725935_chtp",
+      "completed_at": "2026-10-29T18:16:59.799Z",
+      "completed_by": "Nhân Viên Chăm Sóc",
+      "task_name": "Tẩy Giun Định Kỳ",
+      "content": "Lịch hẹn dịch vụ Tẩy Giun Định Kỳ cho bé ngan (Mã lịch: #077_mt3a).",
+      "execution_note": "gầy",
+      "id": "car_1793297819823_xrns",
+      "created_at": "2026-10-29T18:16:59.823Z"
+    },
+    {
+      "schedule_id": "sch_app_app_1793297891862_drw3",
+      "appointment_id": "app_1793297891862_drw3",
+      "pet_id": "pet_1788798725935_chtp",
+      "completed_at": "2026-10-29T19:59:11.278Z",
+      "completed_by": "Nhân Viên Chăm Sóc",
+      "task_name": "Tẩy Giun Định Kỳ",
+      "content": "Lịch hẹn dịch vụ Tẩy Giun Định Kỳ cho bé ngan (Mã lịch: #862_drw3).",
+      "execution_note": "Đã hoàn thành dịch vụ",
+      "id": "car_1793303951379_6ew3",
+      "created_at": "2026-10-29T19:59:11.380Z"
     }
   ],
   "products": [
@@ -6578,12 +7034,24 @@
   "store_config": [
     {
       "id": "cfg_1",
+      "facility_name": "Trung Tâm Chăm Sóc Thú Cưng Sen Chăm Boss",
+      "address": "Số 123 Đường Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh",
+      "hotline": "1900 8888 - Hotline Sen Chăm Boss",
+      "email": "hotro@senchamboss.vn",
+      "operating_hours": "07:30 - 21:00 (Thứ 2 - Chủ Nhật)",
+      "emergency_contact": "0987 654 321 (Cấp cứu 24/7)",
+      "notification_banner": "Hệ thống Sen Chăm Boss vận hành mượt mà với 4 vai trò chuẩn hóa",
+      "banner_active": true,
       "shipping_fee": 30000,
       "bank_id": "vcb",
       "bank_name": "Vietcombank",
       "bank_account": "1234567890",
       "bank_holder": "PETCARE SYSTEM",
-      "bank_branch": "Chi nhánh TP.HCM"
+      "bank_branch": "Chi nhánh TP.HCM",
+      "enable_ai_reminders": true,
+      "auto_confirm_schedules": true,
+      "updated_at": "2026-10-29T17:47:50.152Z",
+      "updated_by": "Admin"
     }
   ],
   "vouchers": [
@@ -7193,6 +7661,32 @@
       "confirmed_by_id": "usr_receptionist_default",
       "id": "pay_1793211840016_h4af",
       "created_at": "2026-10-28T18:24:00.016Z"
+    },
+    {
+      "invoice_id": "inv_1793297772243_8xeu",
+      "appointment_id": "app_1793297748077_mt3a",
+      "user_id": "use_1786177950113_exl4",
+      "amount": 50000,
+      "payment_method": "CHUYEN_KHOAN_DA_NHAN",
+      "status": "SUCCESS",
+      "paid_at": "2026-10-29T18:16:12.242Z",
+      "confirmed_by": "Lễ Tân Hệ Thống",
+      "confirmed_by_id": "usr_receptionist_default",
+      "id": "pay_1793297772253_z0vl",
+      "created_at": "2026-10-29T18:16:12.253Z"
+    },
+    {
+      "invoice_id": "inv_1793303922789_480o",
+      "appointment_id": "app_1793297891862_drw3",
+      "user_id": "use_1786177950113_exl4",
+      "amount": 50000,
+      "payment_method": "TIEN_MAT_DA_THU",
+      "status": "SUCCESS",
+      "paid_at": "2026-10-29T19:58:42.788Z",
+      "confirmed_by": "Lễ Tân Hệ Thống",
+      "confirmed_by_id": "usr_receptionist_default",
+      "id": "pay_1793303922807_uqpp",
+      "created_at": "2026-10-29T19:58:42.807Z"
     }
   ],
   "saved_addresses": [],
@@ -9966,6 +10460,178 @@
       "cancelled_by_id": "use_1786177950113_exl4",
       "cancelled_at": "2026-10-28T18:24:00.043Z",
       "updated_at": "2026-10-28T18:24:00.044Z"
+    },
+    {
+      "petId": "pet_1788798725935_chtp",
+      "userId": "use_1786177950113_exl4",
+      "ownerId": "use_1786177950113_exl4",
+      "priority": "Bình thường",
+      "appointmentDate": "2026-10-30",
+      "appointmentTime": "10:00",
+      "examinationType": "Cắt Tỉa Lông & Tạo Kiểu (Grooming)",
+      "reason": "Đặt dịch vụ: Cắt Tỉa Lông & Tạo Kiểu (Grooming)",
+      "symptoms": "",
+      "weight": 5.8,
+      "note": "",
+      "status": "CANCELLED",
+      "paymentMethod": "TIEN_MAT",
+      "paymentStatus": "CHO_XAC_NHAN",
+      "estimatedPrice": 250000,
+      "price": 250000,
+      "hasInvoice": false,
+      "invoice_id": null,
+      "invoice_code": null,
+      "staffId": null,
+      "staffName": null,
+      "proposedStaffId": null,
+      "proposedStaffName": null,
+      "assignedBy": null,
+      "assignedById": null,
+      "assignedAt": null,
+      "createdAt": "2026-10-29T13:15:03.064Z",
+      "updatedAt": "2026-10-29T13:15:52.716Z",
+      "id": "app_1793279703064_8eqr",
+      "created_at": "2026-10-29T13:15:03.064Z",
+      "updated_at": "2026-10-29T13:15:52.716Z",
+      "reschedule_history": [
+        {
+          "previousDate": "2026-10-30",
+          "previousTime": "09:00",
+          "previousService": "Cắt Tỉa Lông & Tạo Kiểu (Grooming)",
+          "newDate": "2026-10-30",
+          "newTime": "10:00",
+          "newService": "Cắt Tỉa Lông & Tạo Kiểu (Grooming)",
+          "reason": "",
+          "changedBy": "vịt",
+          "changedAt": "2026-10-29T13:15:44.378Z"
+        }
+      ],
+      "cancel_reason": "Chủ nuôi hủy lịch",
+      "cancelled_by": "vịt",
+      "cancelled_by_id": "use_1786177950113_exl4",
+      "cancelled_at": "2026-10-29T13:15:52.716Z"
+    },
+    {
+      "petId": "pet_1788798725935_chtp",
+      "userId": "use_1786177950113_exl4",
+      "ownerId": "use_1786177950113_exl4",
+      "priority": "Bình thường",
+      "appointmentDate": "2026-10-30",
+      "appointmentTime": "09:00",
+      "examinationType": "Tẩy Giun Định Kỳ",
+      "reason": "Đặt dịch vụ: Tẩy Giun Định Kỳ",
+      "symptoms": "",
+      "weight": null,
+      "note": "",
+      "status": "COMPLETED",
+      "paymentMethod": "CHUYEN_KHOAN",
+      "paymentStatus": "DA_THANH_TOAN",
+      "estimatedPrice": 50000,
+      "price": 50000,
+      "hasInvoice": true,
+      "invoice_id": "inv_1793297772243_8xeu",
+      "invoice_code": "HD-2026-061",
+      "staffId": "use_1788690356107_rqnb",
+      "staffName": "Nhân Viên Chăm Sóc",
+      "proposedStaffId": "use_1788690356107_rqnb",
+      "proposedStaffName": "Nhân Viên Chăm Sóc",
+      "assignedBy": "Lễ Tân Hệ Thống",
+      "assignedById": "usr_receptionist_default",
+      "assignedAt": "2026-10-29T18:16:21.088Z",
+      "createdAt": "2026-10-29T18:15:48.077Z",
+      "updatedAt": "2026-10-29T18:16:59.799Z",
+      "id": "app_1793297748077_mt3a",
+      "created_at": "2026-10-29T18:15:48.077Z",
+      "updated_at": "2026-10-29T18:16:59.799Z",
+      "payment_status": "DA_THANH_TOAN",
+      "is_paid": true,
+      "paidAt": "2026-10-29T18:16:12.242Z",
+      "payment_confirmed_by": "Lễ Tân Hệ Thống",
+      "payment_confirmed_by_id": "usr_receptionist_default",
+      "payment_confirmed_at": "2026-10-29T18:16:12.242Z",
+      "invoiceId": "inv_1793297772243_8xeu",
+      "invoiceCode": "HD-2026-061",
+      "confirmed": true,
+      "is_confirmed": true,
+      "receptionist_confirmed": true,
+      "confirmed_by_receptionist": "Lễ Tân Hệ Thống",
+      "confirmed_by_receptionist_id": "usr_receptionist_default",
+      "reception_confirmed_at": "2026-10-29T18:16:12.880Z",
+      "staff_id": "use_1788690356107_rqnb",
+      "assignment_note": "",
+      "confirmed_by": "Nhân Viên Chăm Sóc",
+      "confirmed_by_id": "use_1788690356107_rqnb",
+      "confirmed_at": "2026-10-29T18:16:37.504Z",
+      "acceptedAt": "2026-10-29T18:16:37.504Z",
+      "care_content": "Tẩy Giun Định Kỳ",
+      "notes": "gầy",
+      "condition_after": "gầy",
+      "condition_result": "gầy",
+      "completed_at": "2026-10-29T18:16:59.799Z",
+      "completedAt": "2026-10-29T18:16:59.799Z",
+      "completed_by": "Nhân Viên Chăm Sóc",
+      "completed_by_id": "use_1788690356107_rqnb"
+    },
+    {
+      "petId": "pet_1788798725935_chtp",
+      "userId": "use_1786177950113_exl4",
+      "ownerId": "use_1786177950113_exl4",
+      "priority": "Bình thường",
+      "appointmentDate": "2026-10-30",
+      "appointmentTime": "09:00",
+      "examinationType": "Tẩy Giun Định Kỳ",
+      "reason": "Đặt dịch vụ: Tẩy Giun Định Kỳ",
+      "symptoms": "",
+      "weight": null,
+      "note": "",
+      "status": "COMPLETED",
+      "paymentMethod": "TIEN_MAT",
+      "paymentStatus": "DA_THANH_TOAN",
+      "estimatedPrice": 50000,
+      "price": 50000,
+      "hasInvoice": true,
+      "invoice_id": "inv_1793303922789_480o",
+      "invoice_code": "HD-2026-062",
+      "staffId": "use_1788690356107_rqnb",
+      "staffName": "Nhân Viên Chăm Sóc",
+      "proposedStaffId": "use_1788690356107_rqnb",
+      "proposedStaffName": "Nhân Viên Chăm Sóc",
+      "assignedBy": "Lễ Tân Hệ Thống",
+      "assignedById": "usr_receptionist_default",
+      "assignedAt": "2026-10-29T19:58:39.596Z",
+      "createdAt": "2026-10-29T18:18:11.862Z",
+      "updatedAt": "2026-10-29T19:59:11.278Z",
+      "id": "app_1793297891862_drw3",
+      "created_at": "2026-10-29T18:18:11.862Z",
+      "updated_at": "2026-10-29T19:59:11.278Z",
+      "confirmed": true,
+      "is_confirmed": true,
+      "receptionist_confirmed": true,
+      "confirmed_by_receptionist": "Lễ Tân Hệ Thống",
+      "confirmed_by_receptionist_id": "usr_receptionist_default",
+      "reception_confirmed_at": "2026-10-29T19:58:35.975Z",
+      "staff_id": "use_1788690356107_rqnb",
+      "assignment_note": "",
+      "payment_status": "DA_THANH_TOAN",
+      "is_paid": true,
+      "paidAt": "2026-10-29T19:58:42.788Z",
+      "payment_confirmed_by": "Lễ Tân Hệ Thống",
+      "payment_confirmed_by_id": "usr_receptionist_default",
+      "payment_confirmed_at": "2026-10-29T19:58:42.788Z",
+      "invoiceId": "inv_1793303922789_480o",
+      "invoiceCode": "HD-2026-062",
+      "confirmed_by": "Nhân Viên Chăm Sóc",
+      "confirmed_by_id": "use_1788690356107_rqnb",
+      "confirmed_at": "2026-10-29T19:59:07.690Z",
+      "acceptedAt": "2026-10-29T19:59:07.690Z",
+      "care_content": "Tẩy Giun Định Kỳ",
+      "notes": "",
+      "condition_after": "",
+      "condition_result": "",
+      "completed_at": "2026-10-29T19:59:11.278Z",
+      "completedAt": "2026-10-29T19:59:11.278Z",
+      "completed_by": "Nhân Viên Chăm Sóc",
+      "completed_by_id": "use_1788690356107_rqnb"
     }
   ],
   "services": [
@@ -10103,6 +10769,32 @@
       "id": "ser_1789491639276_u5vj",
       "created_at": "2026-09-15T17:00:39.276Z",
       "updated_at": "2026-09-15T17:01:10.730Z"
+    },
+    {
+      "name": "full 1 ngày",
+      "services_included": [
+        "Cắt Móng & Vệ Sinh Tai"
+      ],
+      "price": 590000,
+      "original_price": 1000000,
+      "validity": "30 ngày",
+      "description": "",
+      "status": "ACTIVE",
+      "created_by": "usr_admin001_default",
+      "id": "ser_1793297076942_2q8f",
+      "created_at": "2026-10-29T18:04:36.942Z"
+    },
+    {
+      "name": "full body",
+      "services_included": [],
+      "price": 290000,
+      "original_price": 500000,
+      "validity": "30 ngày",
+      "description": "",
+      "status": "ACTIVE",
+      "created_by": "usr_admin001_default",
+      "id": "ser_1793297498472_vx0s",
+      "created_at": "2026-10-29T18:11:38.472Z"
     }
   ],
   "invoices": [
@@ -11970,6 +12662,68 @@
       "created_at": "2026-10-28T18:24:00.013Z",
       "notes": "Xác nhận thanh toán bởi Lễ tân (Lễ Tân Hệ Thống) qua Tiền mặt tại cửa hàng.",
       "id": "inv_1793211840013_jqtr"
+    },
+    {
+      "invoice_code": "HD-2026-061",
+      "user_id": "use_1786177950113_exl4",
+      "owner_name": "vịt",
+      "owner_phone": "0876543223",
+      "owner_email": "vit@gmail.com",
+      "pet_id": "pet_1788798725935_chtp",
+      "pet_name": "ngan",
+      "appointment_id": "app_1793297748077_mt3a",
+      "service_name": "Tẩy Giun Định Kỳ",
+      "items": [
+        {
+          "name": "Tẩy Giun Định Kỳ",
+          "quantity": 1,
+          "price": 50000,
+          "amount": 50000
+        }
+      ],
+      "total_amount": 50000,
+      "discount_amount": 0,
+      "final_amount": 50000,
+      "status": "PAID",
+      "payment_method": "CHUYEN_KHOAN_DA_NHAN",
+      "payment_method_label": "Chuyển khoản ngân hàng",
+      "paid_at": "2026-10-29T18:16:12.242Z",
+      "created_by": "usr_receptionist_default",
+      "created_by_name": "Lễ Tân Hệ Thống",
+      "created_at": "2026-10-29T18:16:12.242Z",
+      "notes": "Xác nhận thanh toán bởi Lễ tân (Lễ Tân Hệ Thống) qua Chuyển khoản ngân hàng.",
+      "id": "inv_1793297772243_8xeu"
+    },
+    {
+      "invoice_code": "HD-2026-062",
+      "user_id": "use_1786177950113_exl4",
+      "owner_name": "vịt",
+      "owner_phone": "0876543223",
+      "owner_email": "vit@gmail.com",
+      "pet_id": "pet_1788798725935_chtp",
+      "pet_name": "ngan",
+      "appointment_id": "app_1793297891862_drw3",
+      "service_name": "Tẩy Giun Định Kỳ",
+      "items": [
+        {
+          "name": "Tẩy Giun Định Kỳ",
+          "quantity": 1,
+          "price": 50000,
+          "amount": 50000
+        }
+      ],
+      "total_amount": 50000,
+      "discount_amount": 0,
+      "final_amount": 50000,
+      "status": "PAID",
+      "payment_method": "TIEN_MAT_DA_THU",
+      "payment_method_label": "Tiền mặt tại cửa hàng",
+      "paid_at": "2026-10-29T19:58:42.788Z",
+      "created_by": "usr_receptionist_default",
+      "created_by_name": "Lễ Tân Hệ Thống",
+      "created_at": "2026-10-29T19:58:42.788Z",
+      "notes": "Xác nhận thanh toán bởi Lễ tân (Lễ Tân Hệ Thống) qua Tiền mặt tại cửa hàng.",
+      "id": "inv_1793303922789_480o"
     }
   ],
   "conversations": [

@@ -59,6 +59,20 @@ class Database {
           if (!parsed[key]) parsed[key] = [];
         });
         this.data = { ...initialData, ...parsed };
+
+        // Automatic safe migration: Merge STORE_MANAGER into ADMIN
+        let migrated = false;
+        if (Array.isArray(this.data.users)) {
+          this.data.users.forEach(u => {
+            if (u.role === 'STORE_MANAGER') {
+              u.role = 'ADMIN';
+              migrated = true;
+            }
+          });
+        }
+        if (migrated) {
+          this.saveSync();
+        }
       } else {
         this.save();
       }
@@ -119,17 +133,20 @@ class Database {
     };
 
     // Ensure system roles on clean initial DB
-    ensureUser('quanly@petcare.com', 'Quản Trị Viên (Admin)', 'ADMIN', '123456');
-    ensureUser('quanlycuahang@petcare.com', 'Quản Lý Cửa Hàng', 'STORE_MANAGER', '123456');
+    ensureUser('quanly@petcare.com', 'Admin (Quản lý hệ thống)', 'ADMIN', '123456');
     ensureUser('letan@petcare.com', 'Lễ Tân Hệ Thống', 'RECEPTIONIST', '123456');
     ensureUser('nhanvien@gmail.com', 'Nhân Viên Chăm Sóc', 'CARE_STAFF', '123456');
     ensureUser('chamsoc@petcare.com', 'Nhân Viên Chăm Sóc', 'CARE_STAFF', '123456');
     ensureUser('user@petcare.com', 'Chủ Nuôi Mẫu', 'USER', '123456');
 
-    // Migrate any legacy DOCTOR users to CARE_STAFF
+    // Migrate any legacy DOCTOR users to CARE_STAFF and STORE_MANAGER to ADMIN
     this.data.users.forEach(u => {
       if (u.role === 'DOCTOR') {
         u.role = 'CARE_STAFF';
+        changed = true;
+      }
+      if (u.role === 'STORE_MANAGER') {
+        u.role = 'ADMIN';
         changed = true;
       }
     });

@@ -567,13 +567,9 @@ router.patch('/:id/confirm-payment', (req, res) => {
 // Phân công / Đổi nhân viên chăm sóc (Store Manager / Receptionist)
 router.put('/:id/assign', (req, res) => {
   try {
-    if (req.user.role === 'ADMIN') {
-      return res.status(403).json({ success: false, message: 'Quản trị viên (ADMIN) không trực tiếp phân công lịch chăm sóc nhân viên. Quyền này thuộc về Quản lý cửa hàng (STORE_MANAGER) và Lễ tân.' });
-    }
-
-    const isStaff = ['STORE_MANAGER', 'RECEPTIONIST'].includes(req.user.role);
+    const isStaff = ['ADMIN', 'RECEPTIONIST'].includes(req.user.role);
     if (!isStaff) {
-      return res.status(403).json({ success: false, message: 'Chỉ Quản lý cửa hàng và Lễ tân mới có quyền phân công lịch.' });
+      return res.status(403).json({ success: false, message: 'Chỉ Quản lý hệ thống (ADMIN) và Lễ tân mới có quyền phân công lịch.' });
     }
 
     const { id } = req.params;

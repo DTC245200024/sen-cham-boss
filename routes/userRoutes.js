@@ -410,6 +410,204 @@ router.patch('/staff/:id/toggle-status', (req,res,next) => isManagementRole(req.
 router.delete('/staff-management/:id', (req,res,next) => isManagementRole(req.user?.role) ? next() : requireAdmin(req,res,next), deleteStaffHandler);
 router.delete('/staff/:id', (req,res,next) => isManagementRole(req.user?.role) ? next() : requireAdmin(req,res,next), deleteStaffHandler);
 
+/* ==========================================================================
+   ADMIN ONLY: ACCOUNTS & ROLES AUTHORIZATION MANAGEMENT
+   (Tài khoản và phân quyền: ADMIN, RECEPTIONIST, CARE_STAFF, USER)
+   ========================================================================== */
+
+// GET /api/users/accounts - Get all accounts with search, role filter, status filter, and statistics
+router.get('/accounts', requireAdmin, (req, res) => {
+  try {
+    const { role, status, search } = req.query;
+    let allUsers = db.find('users', () => true) || [];
+    allUsers = allUsers.filter(u => u.status !== 'DELETED');
+
+    const totalAccounts = allUsers.length;
+    const stats = {
+      total: totalAccounts,
+      admin: allUsers.filter(u => u.role === 'ADMIN').length,
+      receptionist: allUsers.filter(u => isReceptionistRole(u.role)).length,
+      care_staff: allUsers.filter(u => isCareStaffRole(u.role)).length,
+      user: allUsers.filter(u => u.role === 'USER' || u.role === 'owner').length,
+      active: allUsers.filter(u => (u.status || 'ACTIVE').toUpperCase() !== 'LOCKED').length,
+      locked: allUsers.filter(u => (u.status || '').toUpperCase() === 'LOCKED').length
+    };
+
+    let filtered = [...allUsers];
+
+    // Role filter
+    if (role && role !== 'ALL') {
+      const upperRole = role.toUpperCase().trim();
+      if (upperRole === 'CARE_STAFF') {
+        filtered = filtered.filter(u => isCareStaffRole(u.role));
+      } else if (upperRole === 'RECEPTIONIST') {
+        filtered = filtered.filter(u => isReceptionistRole(u.role));
+      } else if (upperRole === 'USER') {
+        filtered = filtered.filter(u => u.role === 'USER' || u.role === 'owner');
+      } else {
+        filtered = filtered.filter(u => u.role === upperRole);
+      }
+    }
+
+    // Status filter
+    if (status && status !== 'ALL') {
+      const upperStatus = status.toUpperCase().trim();
+      filtered = filtered.filter(u => (u.status || 'ACTIVE').toUpperCase() === upperStatus);
+    }
+
+    // Search query
+    if (search && search.trim()) {
+      const q = search.trim().toLowerCase();
+      filtered = filtered.filter(u =>
+        (u.full_name && u.full_name.toLowerCase().includes(q)) ||
+        (u.email && u.email.toLowerCase().includes(q)) ||
+        (u.phone && u.phone.includes(q)) ||
+        (u.id && u.id.toLowerCase().includes(q))
+      );
+    }
+
+    const pets = db.find('pets', () => true) || [];
+    const appointments = db.find('appointments', () => true) || [];
+
+    const accounts = filtered.map(u => {
+      const { password_hash, ...rest } = u;
+      const petCount = pets.filter(p => p.user_id === u.id).length;
+      const appCount = appointments.filter(a => a.userId === u.id || a.staffId === u.id || a.staff_id === u.id).length;
+      let displayRole = 'USER';
+      if (u.role === 'ADMIN') displayRole = 'ADMIN';
+      else if (isReceptionistRole(u.role)) displayRole = 'RECEPTIONIST';
+      else if (isCareStaffRole(u.role)) displayRole = 'CARE_STAFF';
+
+      return {
+        ...rest,
+        role: displayRole,
+        pet_count: petCount,
+        appointment_count: appCount
+      };
+    });
+
+    return res.json({ success: true, accounts, stats });
+  } catch (err) {
+    console.error('Get accounts error:', err);
+    res.status(500).json({ success: false, message: 'Lỗi server khi lấy danh sách tài khoản.' });
+  }
+});
+
+// POST /api/users/accounts - Create new account with specified role (Admin only)
+router.post('/accounts', requireAdmin, (req, res) => {
+  try {
+    const { full_name, email, password, role = 'USER', phone = '', address = '', avatar = '' } = req.body;
+
+    if (!full_name || !email || !password) {
+      return res.status(400).json({ success: false, message: 'Vui lòng nhập Họ tên, Email và Mật khẩu.' });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ success: false, message: 'Mật khẩu phải chứa ít nhất 6 ký tự.' });
+    }
+
+    const trimmedEmail = email.toLowerCase().trim();
+    const existing = db.findOne('users', u => u.email && u.email.toLowerCase().trim() === trimmedEmail);
+    if (existing) {
+      return res.status(400).json({ success: false, message: 'Email này đã tồn tại trong hệ thống.' });
+    }
+
+    const allowedRoles = ['ADMIN', 'RECEPTIONIST', 'CARE_STAFF', 'USER'];
+    const targetRole = allowedRoles.includes(role) ? role : 'USER';
+
+    const newUser = db.insert('users', {
+      full_name: full_name.trim(),
+      email: trimmedEmail,
+      password_hash: bcrypt.hashSync(password, 10),
+      role: targetRole,
+      status: 'ACTIVE',
+      phone: phone.trim(),
+      address: address.trim(),
+      avatar: avatar.trim() || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(full_name)}`
+    });
+
+    const { password_hash, ...sanitized } = newUser;
+    return res.status(201).json({
+      success: true,
+      message: `Tạo tài khoản ${sanitized.full_name} (${targetRole}) thành công!`,
+      account: sanitized
+    });
+  } catch (err) {
+    console.error('Create account error:', err);
+    res.status(500).json({ success: false, message: 'Lỗi server khi tạo tài khoản.' });
+  }
+});
+
+// PUT /api/users/accounts/:id - Update account info and role (Admin only)
+router.put('/accounts/:id', requireAdmin, (req, res) => {
+  try {
+    const { id } = req.params;
+    const { full_name, email, role, status, password, phone, address, avatar } = req.body;
+
+    const user = db.findById('users', id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy tài khoản người dùng.' });
+    }
+
+    const updates = {};
+    if (full_name) updates.full_name = full_name.trim();
+
+    if (email) {
+      const trimmedEmail = email.toLowerCase().trim();
+      const existing = db.findOne('users', u => u.email && u.email.toLowerCase().trim() === trimmedEmail && u.id !== id);
+      if (existing) {
+        return res.status(400).json({ success: false, message: 'Email đã được sử dụng bởi tài khoản khác.' });
+      }
+      updates.email = trimmedEmail;
+    }
+
+    if (phone !== undefined) updates.phone = phone.trim();
+    if (address !== undefined) updates.address = address.trim();
+    if (avatar) updates.avatar = avatar.trim();
+
+    // Role modification safety check
+    if (role && role !== user.role) {
+      if (user.role === 'ADMIN' && role !== 'ADMIN') {
+        const activeAdmins = db.find('users', u => u.role === 'ADMIN' && u.status !== 'LOCKED');
+        if (activeAdmins.length <= 1) {
+          return res.status(400).json({ success: false, message: 'Không thể hạ quyền Quản trị viên đang hoạt động duy nhất của hệ thống.' });
+        }
+      }
+      const allowedRoles = ['ADMIN', 'RECEPTIONIST', 'CARE_STAFF', 'USER'];
+      if (allowedRoles.includes(role)) {
+        updates.role = role;
+      }
+    }
+
+    // Status modification safety check
+    if (status && status !== user.status) {
+      if (user.role === 'ADMIN' && status === 'LOCKED') {
+        const activeAdmins = db.find('users', u => u.role === 'ADMIN' && u.status !== 'LOCKED');
+        if (activeAdmins.length <= 1) {
+          return res.status(400).json({ success: false, message: 'Không thể khóa Quản trị viên đang hoạt động duy nhất của hệ thống.' });
+        }
+      }
+      updates.status = status;
+    }
+
+    if (password && password.trim().length >= 6) {
+      updates.password_hash = bcrypt.hashSync(password.trim(), 10);
+    }
+
+    const updated = db.update('users', id, updates);
+    const { password_hash, ...sanitized } = updated;
+
+    return res.json({
+      success: true,
+      message: 'Cập nhật tài khoản thành công!',
+      account: sanitized
+    });
+  } catch (err) {
+    console.error('Update account error:', err);
+    res.status(500).json({ success: false, message: 'Lỗi server khi cập nhật tài khoản.' });
+  }
+});
+
 // GET /api/users - Get customers / pet owners list (Role: USER only)
 router.get('/', requireUserManagement, (req, res) => {
   try {

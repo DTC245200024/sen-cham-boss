@@ -22,6 +22,7 @@ const appointmentRoutes = require('./routes/appointmentRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
 const invoiceRoutes = require('./routes/invoiceRoutes');
+const systemSettingsRoutes = require('./routes/systemSettingsRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -55,6 +56,8 @@ app.use('/api/messages', chatRoutes);
 app.use('/api/conversations', chatRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/invoices', invoiceRoutes);
+app.use('/api/system-settings', systemSettingsRoutes);
+app.use('/api/system/settings', systemSettingsRoutes);
 
 // Fallback for SPA routing
 app.get('*', (req, res) => {

@@ -5,16 +5,6 @@ const { authenticateToken } = require('../middleware/auth');
 
 router.use(authenticateToken);
 
-// Middleware to strictly block ADMIN from all invoice & payment routes
-router.use((req, res, next) => {
-  if (req.user && req.user.role === 'ADMIN') {
-    return res.status(403).json({
-      success: false,
-      message: 'Quản trị viên (ADMIN) không có quyền xem hoặc thao tác trên hóa đơn và thanh toán của cửa hàng. Quyền này thuộc về Quản lý cửa hàng (STORE_MANAGER) và Lễ tân.'
-    });
-  }
-  next();
-});
 
 function enrichInvoice(inv) {
   if (!inv) return null;
@@ -161,12 +151,8 @@ router.get('/unbilled-appointments', (req, res) => {
 // POST /api/invoices - Create invoice (STORE_MANAGER & RECEPTIONIST only)
 router.post('/', (req, res) => {
   try {
-    if (req.user.role === 'ADMIN') {
-      return res.status(403).json({ success: false, message: 'Quản trị viên (ADMIN) không có quyền tạo/lập hóa đơn nghiệp vụ của cửa hàng. Quyền này thuộc về Quản lý cửa hàng (STORE_MANAGER) hoặc Lễ tân.' });
-    }
-
-    if (!['STORE_MANAGER', 'RECEPTIONIST'].includes(req.user.role)) {
-      return res.status(403).json({ success: false, message: 'Chỉ Quản lý cửa hàng hoặc Lễ tân mới có quyền lập hóa đơn.' });
+    if (!['ADMIN', 'RECEPTIONIST'].includes(req.user.role)) {
+      return res.status(403).json({ success: false, message: 'Chỉ Quản lý hệ thống (ADMIN) hoặc Lễ tân mới có quyền lập hóa đơn.' });
     }
 
     const {
@@ -276,10 +262,7 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
   try {
     const { id } = req.params;
-    if (req.user.role === 'ADMIN') {
-      return res.status(403).json({ success: false, message: 'Quản trị viên (ADMIN) không trực tiếp xử lý nghiệp vụ hóa đơn của cửa hàng.' });
-    }
-    const isStaff = ['STORE_MANAGER', 'RECEPTIONIST'].includes(req.user.role);
+    const isStaff = ['ADMIN', 'RECEPTIONIST'].includes(req.user.role);
     if (!isStaff) {
       return res.status(403).json({ success: false, message: 'Bạn không có quyền chỉnh sửa hóa đơn.' });
     }
@@ -291,8 +274,8 @@ router.put('/:id', (req, res) => {
 
     const { service_name, items, total_amount, discount_amount, payment_method, status, notes } = req.body;
 
-    // If invoice is already PAID, do not alter amount unless STORE_MANAGER
-    if (inv.status === 'PAID' && req.user.role !== 'STORE_MANAGER') {
+    // If invoice is already PAID, do not alter amount unless ADMIN
+    if (inv.status === 'PAID' && req.user.role !== 'ADMIN') {
       if (total_amount !== undefined && total_amount !== inv.total_amount) {
         return res.status(400).json({ success: false, message: 'Hóa đơn đã thanh toán không được thay đổi tổng tiền.' });
       }
@@ -344,11 +327,7 @@ router.patch('/:id/pay', (req, res) => {
       return res.status(400).json({ success: false, message: 'Hóa đơn này đã được thanh toán trước đó.' });
     }
 
-    if (req.user.role === 'ADMIN') {
-      return res.status(403).json({ success: false, message: 'Quản trị viên (ADMIN) không trực tiếp xử lý nghiệp vụ thanh toán của cửa hàng.' });
-    }
-
-    const isStaff = ['STORE_MANAGER', 'RECEPTIONIST'].includes(req.user.role);
+    const isStaff = ['ADMIN', 'RECEPTIONIST'].includes(req.user.role);
     const isOwner = req.user.role === 'USER' && inv.user_id === req.user.id;
 
     if (!isStaff && !isOwner) {
@@ -437,8 +416,8 @@ router.patch('/:id/pay', (req, res) => {
 // DELETE /api/invoices/:id - Delete invoice (Admin only)
 router.delete('/:id', (req, res) => {
   try {
-    if (!['ADMIN', 'STORE_MANAGER'].includes(req.user.role)) {
-      return res.status(403).json({ success: false, message: 'Chỉ Quản trị viên mới có quyền xóa hóa đơn.' });
+    if (req.user.role !== 'ADMIN') {
+      return res.status(403).json({ success: false, message: 'Chỉ Quản lý hệ thống (ADMIN) mới có quyền xóa hóa đơn.' });
     }
     const { id } = req.params;
     const deleted = db.delete('invoices', id);

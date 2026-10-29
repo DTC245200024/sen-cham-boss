@@ -72,13 +72,7 @@ router.get('/users', (req, res) => {
     const currentUserRole = req.user.role;
     let users = [];
 
-    if (currentUserRole === 'STORE_MANAGER') {
-      // Store Manager can only chat with USER, RECEPTIONIST, CARE_STAFF (NOT ADMIN)
-      users = db.find('users', u => u.id !== currentUserId && u.status !== 'LOCKED' && u.status !== 'DELETED' && ['USER', 'RECEPTIONIST', 'CARE_STAFF'].includes(u.role));
-    } else if (currentUserRole === 'ADMIN') {
-      // Admin can chat with active users except STORE_MANAGER via this chat
-      users = db.find('users', u => u.id !== currentUserId && u.status !== 'LOCKED' && u.status !== 'DELETED' && u.role !== 'STORE_MANAGER');
-    } else if (currentUserRole === 'RECEPTIONIST') {
+    if (currentUserRole === 'ADMIN' || currentUserRole === 'RECEPTIONIST') {
       users = db.find('users', u => u.id !== currentUserId && u.status !== 'LOCKED' && u.status !== 'DELETED');
     } else if (currentUserRole === 'CARE_STAFF') {
       // Care staff can chat with Admin, Store Manager, Receptionist, and owners of assigned appointments
@@ -86,17 +80,17 @@ router.get('/users', (req, res) => {
       const ownerIds = new Set(assignedApps.map(a => a.userId || a.ownerId).filter(Boolean));
       users = db.find('users', u => {
         if (u.id === currentUserId || u.status === 'LOCKED' || u.status === 'DELETED') return false;
-        if (['ADMIN', 'STORE_MANAGER', 'RECEPTIONIST'].includes(u.role)) return true;
+        if (['ADMIN', 'RECEPTIONIST'].includes(u.role)) return true;
         if (ownerIds.has(u.id)) return true;
         return false;
       });
     } else if (currentUserRole === 'USER') {
-      // Owner can chat with Admin, Store Manager, Receptionist, and Care Staff assigned to their appointments
+      // Owner can chat with Admin, Receptionist, and Care Staff assigned to their appointments
       const myApps = db.find('appointments', a => a.userId === currentUserId || a.ownerId === currentUserId);
       const staffIds = new Set(myApps.map(a => a.staffId || a.staff_id).filter(Boolean));
       users = db.find('users', u => {
         if (u.id === currentUserId || u.status === 'LOCKED' || u.status === 'DELETED') return false;
-        if (['ADMIN', 'STORE_MANAGER', 'RECEPTIONIST'].includes(u.role)) return true;
+        if (['ADMIN', 'RECEPTIONIST'].includes(u.role)) return true;
         if (staffIds.has(u.id)) return true;
         return false;
       });
@@ -211,17 +205,10 @@ const createConversationHandler = (req, res) => {
     }
 
     // Role-based permission checks:
-    // STORE_MANAGER CANNOT chat with ADMIN
-    if (currentUserRole === 'STORE_MANAGER' && recipient.role === 'ADMIN') {
-      return res.status(403).json({ success: false, message: 'Quản lý cửa hàng không được phép nhắn tin với Quản trị viên (ADMIN).' });
-    }
-    if (currentUserRole === 'ADMIN' && recipient.role === 'STORE_MANAGER') {
-      return res.status(403).json({ success: false, message: 'Quản trị viên không được phép nhắn tin với Quản lý cửa hàng qua chức năng này.' });
-    }
 
-    // Care staff can chat with Receptionist, Admin, Store Manager, and owners of assigned appointments
+    // Care staff can chat with Receptionist, Admin, and owners of assigned appointments
     if (req.user.role === 'CARE_STAFF') {
-      const isTargetStaff = ['ADMIN', 'STORE_MANAGER', 'RECEPTIONIST'].includes(recipient.role);
+      const isTargetStaff = ['ADMIN', 'RECEPTIONIST'].includes(recipient.role);
       const isTargetAssignedOwner = db.findOne('appointments', a => 
         (a.staffId === currentUserId || a.staff_id === currentUserId) && (a.userId === recipient_id || a.ownerId === recipient_id)
       );
@@ -233,9 +220,9 @@ const createConversationHandler = (req, res) => {
       }
     }
 
-    // Owner can chat with Admin, Receptionist, Store Manager, and assigned Care Staff
+    // Owner can chat with Admin, Receptionist, and assigned Care Staff
     if (req.user.role === 'USER') {
-      const isTargetStaff = ['ADMIN', 'STORE_MANAGER', 'RECEPTIONIST'].includes(recipient.role);
+      const isTargetStaff = ['ADMIN', 'RECEPTIONIST'].includes(recipient.role);
       const isTargetCareStaff = recipient.role === 'CARE_STAFF' && db.findOne('appointments', a =>
         (a.userId === currentUserId || a.ownerId === currentUserId) && (a.staffId === recipient_id || a.staff_id === recipient_id)
       );
@@ -356,18 +343,10 @@ const getMessagesHandler = (req, res) => {
     const otherUserId = (conv.participants || []).find(p => p !== currentUserId);
     const otherUser = otherUserId ? db.findById('users', otherUserId) : null;
 
-    // STORE_MANAGER cannot access conversations with ADMIN
-    if (currentUserRole === 'STORE_MANAGER' && otherUser && otherUser.role === 'ADMIN') {
-      return res.status(403).json({ success: false, message: 'Quản lý cửa hàng không có quyền truy cập cuộc trò chuyện với Quản trị viên.' });
-    }
-    if (currentUserRole === 'ADMIN' && otherUser && otherUser.role === 'STORE_MANAGER') {
-      return res.status(403).json({ success: false, message: 'Không có quyền truy cập cuộc trò chuyện với Quản lý cửa hàng.' });
-    }
-
     if (currentUserRole === 'CARE_STAFF') {
       const assignedApps = db.find('appointments', a => a.staffId === currentUserId || a.staff_id === currentUserId);
       const assignedOwnerIds = new Set(assignedApps.map(a => a.userId || a.ownerId).filter(Boolean));
-      const isAllowed = otherUser && (['ADMIN', 'STORE_MANAGER', 'RECEPTIONIST'].includes(otherUser.role) || assignedOwnerIds.has(otherUserId));
+      const isAllowed = otherUser && (['ADMIN', 'RECEPTIONIST'].includes(otherUser.role) || assignedOwnerIds.has(otherUserId));
       if (!isAllowed) {
         return res.status(403).json({ success: false, message: 'Bạn không có quyền truy cập cuộc trò chuyện này.' });
       }
@@ -457,18 +436,10 @@ const sendMessageHandler = (req, res) => {
       return res.status(400).json({ success: false, message: 'Không tìm thấy người nhận.' });
     }
 
-    const recipient = db.findById('users', recipientId);
-    if (currentUserRole === 'STORE_MANAGER' && recipient && recipient.role === 'ADMIN') {
-      return res.status(403).json({ success: false, message: 'Quản lý cửa hàng không được phép gửi tin nhắn tới Quản trị viên (ADMIN).' });
-    }
-    if (currentUserRole === 'ADMIN' && recipient && recipient.role === 'STORE_MANAGER') {
-      return res.status(403).json({ success: false, message: 'Không được phép gửi tin nhắn tới Quản lý cửa hàng.' });
-    }
-
     if (currentUserRole === 'CARE_STAFF') {
       const assignedApps = db.find('appointments', a => a.staffId === currentUserId || a.staff_id === currentUserId);
       const assignedOwnerIds = new Set(assignedApps.map(a => a.userId || a.ownerId).filter(Boolean));
-      const isAllowed = recipient && (['ADMIN', 'STORE_MANAGER', 'RECEPTIONIST'].includes(recipient.role) || assignedOwnerIds.has(recipientId));
+      const isAllowed = recipient && (['ADMIN', 'RECEPTIONIST'].includes(recipient.role) || assignedOwnerIds.has(recipientId));
       if (!isAllowed) {
         return res.status(403).json({ success: false, message: 'Bạn không có quyền gửi tin nhắn trong cuộc trò chuyện này.' });
       }

@@ -5,16 +5,10 @@ const { authenticateToken } = require('../middleware/auth');
 
 router.use(authenticateToken);
 
-// Middleware to check STORE_MANAGER role (ADMIN is not allowed to view store business revenues)
+// Middleware to check ADMIN role
 const checkRevenuePermission = (req, res, next) => {
-  if (req.user.role === 'ADMIN') {
-    return res.status(403).json({
-      success: false,
-      message: 'Quản trị viên (ADMIN) không có quyền xem doanh thu, thu nhập và báo cáo kinh doanh của cửa hàng. Quyền này thuộc về Quản lý cửa hàng (STORE_MANAGER).'
-    });
-  }
-  if (req.user.role !== 'STORE_MANAGER') {
-    return res.status(403).json({ success: false, message: 'Chức năng thống kê doanh thu chỉ dành riêng cho Quản lý cửa hàng.' });
+  if (req.user.role !== 'ADMIN') {
+    return res.status(403).json({ success: false, message: 'Chức năng thống kê doanh thu chỉ dành cho Quản lý hệ thống (ADMIN).' });
   }
   next();
 };

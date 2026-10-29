@@ -52,7 +52,7 @@ function initScheduleUI() {
       const res = await apiRequest(`/schedules/${id}`, 'PUT', data);
 
       if (res && res.success) {
-        showToast(res.message || 'Cập nhật lịch chăm sóc thành công!', 'success');
+        showToast(res.message || 'Cập nhật nhắc lịch AI thành công!', 'success');
         closeModal('modal-schedule');
         try {
           if (window.loadSchedulesList) await window.loadSchedulesList();
@@ -63,7 +63,7 @@ function initScheduleUI() {
           console.warn('UI refresh warning after schedule submit:', uiErr);
         }
       } else {
-        showToast(res?.message || 'Có lỗi xảy ra khi lưu lịch chăm sóc.', 'error');
+        showToast(res?.message || 'Có lỗi xảy ra khi lưu nhắc lịch AI.', 'error');
       }
     });
   }
@@ -100,7 +100,7 @@ async function loadSchedulesList() {
   }
 
   if (schedulesToProcess.length === 0) {
-    container.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-muted); background:#fff; border-radius:var(--radius-md); border:1px solid var(--border);"><i class="fa-regular fa-calendar-xmark" style="font-size:24px; color:#9ca3af; margin-bottom:8px; display:block;"></i> Hiện tại không có lịch chăm sóc nào phù hợp.</div>`;
+    container.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-muted); background:#fff; border-radius:var(--radius-md); border:1px solid var(--border);"><i class="fa-regular fa-calendar-xmark" style="font-size:24px; color:#9ca3af; margin-bottom:8px; display:block;"></i> Hiện tại không có nhắc lịch AI nào phù hợp.</div>`;
     return;
   }
 
@@ -240,7 +240,7 @@ async function editSchedule(id) {
   }
 
   if (!sch) {
-    showToast('Không tìm thấy thông tin lịch chăm sóc cần chỉnh sửa.', 'error');
+    showToast('Không tìm thấy thông tin nhắc lịch AI cần chỉnh sửa.', 'error');
     return;
   }
 
@@ -262,7 +262,7 @@ async function editSchedule(id) {
 
   // Update modal title and submit button text
   const modalTitle = document.getElementById('modal-schedule-title');
-  if (modalTitle) modalTitle.innerText = 'Chỉnh Sửa Lịch Chăm Sóc';
+  if (modalTitle) modalTitle.innerText = 'Chỉnh Sửa Nhắc Lịch AI';
 
   const submitBtn = document.getElementById('schedule-form-submit-btn');
   if (submitBtn) {

@@ -524,14 +524,13 @@ function onAuthSuccess() {
   const topUserRole = document.getElementById('top-user-role');
   if (topUserRole) {
     const roleTitles = {
-      'ADMIN': 'QUẢN TRỊ VIÊN',
-      'STORE_MANAGER': 'QUẢN LÝ CỬA HÀNG',
+      'ADMIN': 'Admin (Quản lý hệ thống)',
       'RECEPTIONIST': 'LỄ TÂN',
       'CARE_STAFF': 'NHÂN VIÊN CHĂM SÓC',
       'USER': 'CHỦ NUÔI'
     };
-    topUserRole.innerText = roleTitles[currentUser.role] || 'CHỦ NUÔI';
-    topUserRole.className = ['ADMIN','STORE_MANAGER'].includes(currentUser.role) ? 'badge badge-danger' : 
+    topUserRole.innerText = roleTitles[currentUser.role] || (currentUser.role === 'ADMIN' ? 'Admin (Quản lý hệ thống)' : 'CHỦ NUÔI');
+    topUserRole.className = currentUser.role === 'ADMIN' ? 'badge badge-danger' : 
                             (currentUser.role === 'RECEPTIONIST' ? 'badge badge-warning' : 
                             (currentUser.role === 'CARE_STAFF' ? 'badge badge-info' : 'badge badge-secondary'));
   }
@@ -559,13 +558,7 @@ function onAuthSuccess() {
 
   if (currentUser.role === 'ADMIN') {
     if (adminMenuGroup) adminMenuGroup.style.display = 'block';
-    if (navProfileText) navProfileText.innerText = 'Hồ Sơ Quản Trị Viên';
-    if (openAiGenModalBtn) openAiGenModalBtn.style.display = 'inline-flex';
-    if (btnBookApp) btnBookApp.style.display = 'none';
-    if (openAddHealthBtn) openAddHealthBtn.style.display = 'none';
-  } else if (currentUser.role === 'STORE_MANAGER') {
-    if (storeManagerMenuGroup) storeManagerMenuGroup.style.display = 'block';
-    if (navProfileText) navProfileText.innerText = 'Hồ Sơ Quản Lý Cửa Hàng';
+    if (navProfileText) navProfileText.innerText = 'Hồ Sơ Quản Trị Hệ Thống';
     if (openAiGenModalBtn) openAiGenModalBtn.style.display = 'inline-flex';
     if (btnBookApp) btnBookApp.style.display = 'inline-flex';
     if (openAddHealthBtn) openAddHealthBtn.style.display = 'inline-flex';
@@ -616,11 +609,7 @@ function onAuthSuccess() {
     window.switchView(targetView, null, true);
   } else if (currentUser.role === 'ADMIN') {
     if (typeof window.switchView === 'function') {
-      window.switchView('admin-users', null, true);
-    }
-  } else if (currentUser.role === 'STORE_MANAGER') {
-    if (typeof window.switchView === 'function') {
-      window.switchView('dashboard', null, true);
+      window.switchView('admin-staff', null, true);
     }
   } else if (currentUser.role === 'RECEPTIONIST') {
     if (typeof window.switchView === 'function') {

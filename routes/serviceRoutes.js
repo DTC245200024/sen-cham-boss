@@ -175,38 +175,23 @@ router.get('/packages', (req, res) => {
   }
 });
 
-// Authenticated mutations (ADMIN & RECEPTIONIST)
+// Authenticated mutations (Admin only)
 router.use(authenticateToken);
 
-// Middlewares
-const requireStoreManagerForCreate = (req, res, next) => {
-  if (req.user && req.user.role === 'ADMIN') {
+// Middleware: Only Admin (Quản lý hệ thống) has rights to create, edit or delete services and packages
+const requireAdminRole = (req, res, next) => {
+  const role = req.user ? String(req.user.role).toUpperCase() : '';
+  if (role !== 'ADMIN' && role !== 'STORE_MANAGER') {
     return res.status(403).json({
       success: false,
-      message: 'Quản trị viên (ADMIN) không trực tiếp tạo/thêm dịch vụ mới của cửa hàng. Quyền này thuộc về Quản lý cửa hàng (STORE_MANAGER).'
-    });
-  }
-  if (!req.user || !['STORE_MANAGER', 'RECEPTIONIST'].includes(req.user.role)) {
-    return res.status(403).json({
-      success: false,
-      message: 'Chỉ Quản lý cửa hàng (STORE_MANAGER) mới có quyền thêm dịch vụ mới.'
+      message: 'Chỉ Admin (Quản lý hệ thống) mới có quyền thực hiện thao tác này.'
     });
   }
   next();
 };
 
-const requireAdminOrManagerForMutations = (req, res, next) => {
-  if (!req.user || !['ADMIN', 'STORE_MANAGER', 'RECEPTIONIST'].includes(req.user.role)) {
-    return res.status(403).json({
-      success: false,
-      message: 'Bạn không có quyền chỉnh sửa hoặc xóa dịch vụ này.'
-    });
-  }
-  next();
-};
-
-// POST /api/services - Create service
-router.post('/', requireStoreManagerForCreate, (req, res) => {
+// POST /api/services - Create service (Admin only)
+router.post('/', requireAdminRole, (req, res) => {
   try {
     const { name, category, description, price, duration, status } = req.body;
     if (!name || !price) {
@@ -230,8 +215,8 @@ router.post('/', requireStoreManagerForCreate, (req, res) => {
   }
 });
 
-// PUT /api/services/:id - Edit service (ADMIN, STORE_MANAGER, RECEPTIONIST)
-router.put('/:id', requireAdminOrManagerForMutations, (req, res) => {
+// PUT /api/services/:id - Edit service (Admin only)
+router.put('/:id', requireAdminRole, (req, res) => {
   try {
     const { id } = req.params;
     const { name, category, description, price, duration, status } = req.body;
@@ -257,8 +242,8 @@ router.put('/:id', requireAdminOrManagerForMutations, (req, res) => {
   }
 });
 
-// DELETE /api/services/:id - Delete service (ADMIN, STORE_MANAGER, RECEPTIONIST)
-router.delete('/:id', requireAdminOrManagerForMutations, (req, res) => {
+// DELETE /api/services/:id - Delete service (Admin only)
+router.delete('/:id', requireAdminRole, (req, res) => {
   try {
     const { id } = req.params;
     const deleted = db.delete('services', id);
@@ -273,8 +258,8 @@ router.delete('/:id', requireAdminOrManagerForMutations, (req, res) => {
 });
 
 // Package Mutations
-// POST /api/services/packages - Create package
-router.post('/packages', requireStoreManagerForCreate, (req, res) => {
+// POST /api/services/packages - Create package (Admin only)
+router.post('/packages', requireAdminRole, (req, res) => {
   try {
     const { name, services_included, price, original_price, validity, description, status } = req.body;
     if (!name || !price) {
@@ -304,8 +289,8 @@ router.post('/packages', requireStoreManagerForCreate, (req, res) => {
   }
 });
 
-// PUT /api/services/packages/:id - Edit package (ADMIN, STORE_MANAGER, RECEPTIONIST)
-router.put('/packages/:id', requireAdminOrManagerForMutations, (req, res) => {
+// PUT /api/services/packages/:id - Edit package (Admin only)
+router.put('/packages/:id', requireAdminRole, (req, res) => {
   try {
     const { id } = req.params;
     const { name, services_included, price, original_price, validity, description, status } = req.body;
@@ -338,8 +323,8 @@ router.put('/packages/:id', requireAdminOrManagerForMutations, (req, res) => {
   }
 });
 
-// DELETE /api/services/packages/:id - Delete package (ADMIN, STORE_MANAGER, RECEPTIONIST)
-router.delete('/packages/:id', requireAdminOrManagerForMutations, (req, res) => {
+// DELETE /api/services/packages/:id - Delete package (Admin only)
+router.delete('/packages/:id', requireAdminRole, (req, res) => {
   try {
     const { id } = req.params;
     const deleted = db.delete('service_packages', id);

@@ -9,3 +9,5 @@ yarn-error.log*
 token.txt
 .DS_Store
 Thumbs.db
+*.bak*
+scratch/

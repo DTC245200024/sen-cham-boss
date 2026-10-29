@@ -8,17 +8,10 @@ router.use(authenticateToken);
 // GET /api/dashboard/stats - Thống kê 3 nội dung cốt lõi: Lượt dịch vụ, Doanh thu, Khách quay lại
 router.get('/stats', (req, res) => {
   try {
-    if (req.user.role === 'ADMIN') {
+    if (req.user.role !== 'ADMIN' && req.user.role !== 'RECEPTIONIST') {
       return res.status(403).json({
         success: false,
-        message: 'Quản trị viên (ADMIN) không có quyền xem doanh thu, thu nhập và báo cáo kinh doanh của cửa hàng. Quyền này thuộc về Quản lý cửa hàng (STORE_MANAGER).'
-      });
-    }
-
-    if (req.user.role !== 'STORE_MANAGER' && req.user.role !== 'RECEPTIONIST') {
-      return res.status(403).json({
-        success: false,
-        message: 'Chức năng thống kê & báo cáo chỉ dành riêng cho Quản lý cửa hàng và Lễ tân.',
+        message: 'Chức năng thống kê & báo cáo chỉ dành riêng cho Quản lý hệ thống (ADMIN) và Lễ tân.',
         redirectTo: 'appointments'
       });
     }

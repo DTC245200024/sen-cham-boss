@@ -29,8 +29,8 @@ router.post('/register', (req, res) => {
     }
 
     const password_hash = bcrypt.hashSync(password, 10);
-    const validRoles = ['USER', 'RECEPTIONIST', 'CARE_STAFF'];
-    const assignedRole = validRoles.includes(role) ? role : 'USER';
+    // Public registration strictly creates USER (Chủ nuôi). Staff & Admin are assigned only by Admin.
+    const assignedRole = 'USER';
 
     const newUser = db.insert('users', {
       full_name: full_name.trim(),
@@ -113,7 +113,8 @@ router.post('/login', (req, res) => {
       return res.status(400).json({ success: false, message: 'Mật khẩu không chính xác. Vui lòng thử lại!' });
     }
 
-    const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
+    const normalizedRole = user.role === 'STORE_MANAGER' ? 'ADMIN' : user.role;
+    const token = jwt.sign({ id: user.id, role: normalizedRole }, JWT_SECRET, { expiresIn: '7d' });
 
     res.cookie('token', token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 });
 
@@ -125,7 +126,7 @@ router.post('/login', (req, res) => {
         id: user.id,
         full_name: user.full_name,
         email: user.email,
-        role: user.role,
+        role: normalizedRole,
         avatar: user.avatar,
         phone: user.phone || '',
         address: user.address || ''
@@ -144,13 +145,14 @@ router.get('/me', authenticateToken, (req, res) => {
   if (!freshUser) {
     return res.status(404).json({ success: false, message: 'Người dùng không tồn tại.' });
   }
+  const normalizedRole = freshUser.role === 'STORE_MANAGER' ? 'ADMIN' : freshUser.role;
   return res.json({
     success: true,
     user: {
       id: freshUser.id,
       full_name: freshUser.full_name,
       email: freshUser.email,
-      role: freshUser.role,
+      role: normalizedRole,
       status: freshUser.status,
       avatar: freshUser.avatar,
       phone: freshUser.phone || '',
